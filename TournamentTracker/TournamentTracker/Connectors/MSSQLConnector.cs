@@ -11,6 +11,27 @@ namespace TournamentTracker.Connectors
     /// </summary>
     public class MSSQLConnector : IDataConnection
     {
+        public PersonModel CreatePerson(PersonModel person)
+        {
+            using (var connection =
+                new SqlConnection(GlobalConfiguration.GetConnectionString("Tournaments"))) 
+            {
+                var p = new Dapper.DynamicParameters();
+
+                p.Add("@FirstName", person.FirstName);
+                p.Add("@LastName", person.LastName);
+                p.Add("@EmailAddress", person.EmailAddress);
+                p.Add("@CellphoneNumber", person.CellphoneNumber);
+                p.Add("@id", person.Id, DbType.Int32, ParameterDirection.Output);
+
+                connection.Execute("dbo.spPeople_Insert", p, commandType: CommandType.StoredProcedure);
+
+                person.Id = p.Get<int>("@id");
+
+                return person;
+            }
+        }
+
         public PrizeModel CreatePrize(PrizeModel prize)
         {
             using (var connection = 

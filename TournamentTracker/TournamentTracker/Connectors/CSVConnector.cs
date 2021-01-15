@@ -12,6 +12,26 @@ namespace TournamentTracker.Connectors
     public class CSVConnector : IDataConnection
     {
         public const string PrizesFilePath = "PrizeModels.csv";
+        public const string PeopleFilePath = "PeopleModels.csv";
+
+        public PersonModel CreatePerson(PersonModel person)
+        {
+            List<PersonModel> people = PeopleFilePath.GetFilePath().LoadFile().ConvertLinesToPersonModels();
+
+            var lastId = 0;
+
+            if (people.Count > 0)
+            {
+                lastId = people.OrderByDescending(x => x.Id).First().Id;
+            }
+
+            person.Id = lastId + 1;
+
+            people.Add(person);
+            people.SaveToPeopleFile(PeopleFilePath);
+
+            return person;
+        }
 
         public PrizeModel CreatePrize(PrizeModel prize)
         {
@@ -26,7 +46,7 @@ namespace TournamentTracker.Connectors
             prize.Id = lastPrizeId + 1;
 
             prizes.Add(prize);
-            prizes.SaveToPrizeFile(PrizesFilePath);
+            prizes.SaveToPrizesFile(PrizesFilePath);
 
             return prize;
         }

@@ -12,6 +12,13 @@ namespace TournamentTracker.Interfaces
         /// </summary>
         /// <param name="prize"> The prize model. </param>
         /// <returns></returns>
-        PrizeModel CreatePrize(PrizeModel prize);        
+        PrizeModel CreatePrize(PrizeModel prize);
+
+        /// <summary>
+        /// Allows to add the person to the data storage.
+        /// </summary>
+        /// <param name="person"> The person model. </param>
+        /// <returns></returns>
+        PersonModel CreatePerson(PersonModel person);
     }
 }
