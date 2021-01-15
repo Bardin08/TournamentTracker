@@ -24,14 +24,14 @@
         /// <remarks>
         /// Should be used only if a prize is a fixed amount of something.
         /// </remarks>
-        public decimal PrizeAmount { get; }
+        public decimal PrizeAmount { get; set; }
         /// <summary>
         /// Represents which percent from a full prize fund will receive a person or a team.
         /// </summary>
         /// <remarks>
         /// Should be used only if <see cref="PriceAmount"/> is not used.
         /// </remarks>
-        public double PricePercentage { get; set; }
+        public double PrizePercentage { get; set; }
 
         /// <summary>
         /// Creates a prize model.
@@ -67,7 +67,7 @@
             PlaceName = placeName;
             PrizeName = prizeName;
             PrizeAmount = prizeAmount;
-            PricePercentage = 0;
+            PrizePercentage = 0;
         }
         /// <summary>
         /// Creates a prize model.
@@ -96,7 +96,7 @@
             PlaceNumber = placeNumber;
             PlaceName = placeName;
             PrizeName = prizeName;
-            PricePercentage = pricePercentage;
+            PrizePercentage = pricePercentage;
             PrizeAmount = 0;
         }
     }
