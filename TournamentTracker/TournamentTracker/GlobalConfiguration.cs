@@ -5,16 +5,16 @@ namespace TournamentTracker
 {
     public static class GlobalConfiguration
     {
-        public static List<IDataConnection> Connections { get; private set; } = new List<IDataConnection>();
+        public static IDataConnection Connection { get; private set; }
 
-        public static void InitConnections(List<IDataConnection> connections)
+        public static void InitConnections(IDataConnection connection)
         {
-            if (connections == null)
+            if (connection == null)
             {
-                throw new System.ArgumentException($"\"{nameof(connections)}\" can`t be null", nameof(connections));
+                throw new System.ArgumentException($"\"{nameof(connection)}\" can`t be null", nameof(connection));
             }
 
-            connections.AddRange(connections);
+            Connection = connection;
         }
 
         public static string GetConnectionString(string name)
