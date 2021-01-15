@@ -39,7 +39,7 @@
                    FontFamily="Cambria"
                    FontWeight="SemiBold"/>
         <TextBox Grid.Column="1" Grid.Row="0"
-                 Name="PlaceNumerTextBox"
+                 Name="PlaceNumberTextBox"
                  Width="150"
                  Margin="10 5 0 5"
                  HorizontalAlignment="Center"
