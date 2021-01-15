@@ -18,6 +18,7 @@ namespace TournamentTrackerWPFUI.Views
         public CreatePrizeView()
         {
             InitializeComponent();
+            ClearForm();
         }
 
         private async void CreatePrizeButton_Click(object sender, RoutedEventArgs e)
@@ -27,12 +28,12 @@ namespace TournamentTrackerWPFUI.Views
             {
                 var model = CreatePrizeModelFromFrom();
                 await Task.Run(() => GlobalConfiguration.Connection.CreatePrize(model));
+
+                ClearForm();
             }
             else
             {
-                var sb = new StringBuilder();
-
-                sb.Append("Errors:\n");
+                var sb = new StringBuilder("Errors:\n");
 
                 foreach (var error in validationResult.Errors)
                 {
@@ -136,6 +137,12 @@ namespace TournamentTrackerWPFUI.Views
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void ClearForm()
+        {
+            PrizeAmountTextBox.Text = PrizePercentageTextBox.Text = "0";
+            PrizeNameTextBox.Text = PlaceNameTextBox.Text = PlaceNumberTextBox.Text = "";
         }
     }
 }
