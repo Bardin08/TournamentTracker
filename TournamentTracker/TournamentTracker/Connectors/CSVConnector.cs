@@ -6,6 +6,9 @@ using TournamentTracker.Connectors.TextHelpers;
 
 namespace TournamentTracker.Connectors
 {
+    /// <summary>
+    /// Connector for CSV file. Allows saving data to CSV files.
+    /// </summary>
     public class CSVConnector : IDataConnection
     {
         public const string PrizesFilePath = "PrizeModels.csv";

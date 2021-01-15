@@ -6,6 +6,9 @@ using TournamentTracker.Models;
 
 namespace TournamentTracker.Connectors
 {
+    /// <summary>
+    /// Connector for MS SQL database. Allows saving data to MS SQL databases.
+    /// </summary>
     public class MSSQLConnector : IDataConnection
     {
         public PrizeModel CreatePrize(PrizeModel prize)
