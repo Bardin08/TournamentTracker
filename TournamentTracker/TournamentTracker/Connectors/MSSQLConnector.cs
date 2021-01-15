@@ -19,7 +19,7 @@ namespace TournamentTracker.Connectors
                 p.Add("@PlaceName", prize.PlaceName);
                 p.Add("@PrizeName", prize.PrizeName);
                 p.Add("@PrizeAmount", prize.PrizeAmount);
-                p.Add("@PrizePercentage", prize.PricePercentage);
+                p.Add("@PrizePercentage", prize.PrizePercentage);
                 p.Add("@id", prize.Id, DbType.Int32, ParameterDirection.Output);
 
                 connection.Execute("dbo.spPrizes_Insert", p, commandType: CommandType.StoredProcedure);
