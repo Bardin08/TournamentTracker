@@ -15,6 +15,10 @@
         /// </summary>
         public string LastName { get; set; }
         /// <summary>
+        /// Represents person full name. 
+        /// </summary>
+        public string FullName => $"{FirstName} {LastName}";
+        /// <summary>
         /// Represents a team participant`s email address.
         /// </summary>
         public string EmailAddress { get; set; }
@@ -30,7 +34,7 @@
         public PersonModel()
         {
         }
-        
+
         /// <summary>
         /// Constructs a person model.
         /// </summary>
