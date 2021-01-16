@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -67,14 +68,23 @@
                                FontFamily="Cambria"
                                FontStyle="Normal"
                                FontWeight="SemiBold"/>
-                        <Controls:SplitButton x:Name="TeamSplitButton"
-                                              Width="250"
-                                              Margin="5 0 5 5" 
-                                              Padding="3" 
-                                              FontSize="16px"
-                                              FontFamily="Cambria"
-                                              FontStyle="Normal"
-                                              FontWeight="SemiBold"/>
+                        <ComboBox ItemsSource="{Binding AvailableMembers, Mode=OneWay}"
+                                  Width="250"
+                                  IsSynchronizedWithCurrentItem="True">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding FullName, Mode=OneWay}" 
+                                             Width="250"
+                                             Margin="5 5 5 0" 
+                                             Padding="3" 
+                                             FontSize="12px"
+                                             FontFamily="Cambria"
+                                             FontStyle="Normal"
+                                             FontWeight="SemiBold"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical"
@@ -182,7 +192,7 @@
                                         HorizontalAlignment="Center">
                                 <Button x:Name="AddParticipantButton"
                                         Content="Add Team Member"
-                                        Click="AddTeamMemberButton_Click"
+                                        Click="AddParticipantButton_Click"
                                         Margin="5 5 5 0" 
                                         Padding="3" 
                                         FontSize="12px"
@@ -195,18 +205,24 @@
 
                 </StackPanel>
             </Grid>
-
+                    
+            
+            
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" 
+                <Border BorderThickness="0.5px"
+                        BorderBrush="Gainsboro"
+                        Margin="5"
+                        CornerRadius="0.5">
+                    <Grid Grid.Row="0" 
                       Name="TeamMembersListContainer">
-                    <StackPanel Margin="5"
+                        <StackPanel Margin="5"
                                 Orientation="Vertical">
-                        <TextBlock Text="Team Members"
+                            <TextBlock Text="Team Members:"
                                Margin="5"
                                Padding="3"
                                FontSize="16px"
@@ -214,36 +230,39 @@
                                FontFamily="Cambria"
                                FontWeight="SemiBold"/>
 
-                        <ListBox x:Name="TeamMembersListBox"
+                            <ListBox x:Name="TeamMembersListBox"
                              Style= "{StaticResource MahApps.Styles.ListBox}"
-                             ItemsSource="{Binding }"
-                             SelectionChanged="TeamMembersListBox_SelectionChanged"
-                             Height="{Binding ActualHeight, ElementName=TeamMembersListContainer, Mode=OneWay}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel 
+                             ItemsSource="{Binding Path=SelectedMembers}"
+                             Height="185">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel 
                                     Margin="5" 
                                     Orientation="Horizontal" 
-                                    HorizontalAlignment="Center">
-                                        <TextBlock x:Name="MatchTextBlock"
-                                                   Margin="5"
+                                    HorizontalAlignment="Left">
+                                            <TextBlock Margin="5"
+                                                   Text="{Binding FullName}"
                                                    Padding="3"
                                                    FontSize="16px"
                                                    FontStyle="Normal"
                                                    FontFamily="Cambria"
                                                    FontWeight="SemiBold"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-                <Grid Grid.Row="1" 
-                      Name="TournamentParticipansListContainer">
-                    <StackPanel Margin="5"
+                <Border BorderThickness="0.5px"
+                        BorderBrush="Gainsboro"
+                        Grid.Row="1"
+                        Margin="5">
+                    <Grid Name="TournamentParticipansListContainer">
+                        <StackPanel Margin="5 5 5 10"
                                 Orientation="Vertical">
-                        <TextBlock Text="Prizes: "
+                            <TextBlock Text="Available members: "
                                Margin="5"
                                Padding="3"
                                FontSize="16px"
@@ -251,31 +270,39 @@
                                FontFamily="Cambria"
                                FontWeight="SemiBold"/>
 
-                        <ListBox x:Name="TournamentParticipantsListBox"
+                            <ListBox x:Name="TournamentParticipantsListBox"
                              Style= "{StaticResource MahApps.Styles.ListBox}"
-                             ItemsSource="{Binding }"
+                             ItemsSource="{Binding AvailableMembers}"
+                             IsSynchronizedWithCurrentItem="True"
                              SelectionChanged="TournamentParticipantsListBox_SelectionChanged"
-                             Height="{Binding ActualHeight, ElementName=TournamentParticipansListContainer, Mode=OneWay}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel 
+                             Height="179">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel 
                                     Margin="5" 
                                     Orientation="Horizontal" 
-                                    HorizontalAlignment="Center">
-                                        <TextBlock x:Name="MatchTextBlock"
-                                                   Margin="5"
+                                    HorizontalAlignment="Left">
+                                            <TextBlock Margin="5"
+                                                   Text="{Binding FullName}"
                                                    Padding="3"
                                                    FontSize="16px"
                                                    FontStyle="Normal"
                                                    FontFamily="Cambria"
                                                    FontWeight="SemiBold"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
-                </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
             </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+            <Button Content="Create team" Name="CreateTeamButton" Click="CreateTeamButton_Click"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>

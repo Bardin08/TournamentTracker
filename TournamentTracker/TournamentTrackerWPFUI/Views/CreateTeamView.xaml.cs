@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,6 +11,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using TournamentTracker.Models;
 using TournamentTrackerWPFUI.Helpers;
+using TournamentTrackerWPFUI.ViewModels;
 
 namespace TournamentTrackerWPFUI.Views
 {
@@ -21,16 +23,36 @@ namespace TournamentTrackerWPFUI.Views
         public CreateTeamView()
         {
             InitializeComponent();
+
+            DataContext = new CreateTeamViewModel();
         }
 
         private async void AddTeamMemberButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedPerson = TournamentParticipantsListBox.SelectedValue as PersonModel;
+
+            if (selectedPerson != null)
+            {
+                var viewModel = DataContext as CreateTeamViewModel;
+
+                viewModel.AddUserToTeam(selectedPerson);
+            }
+            else
+            {
+                await this.ShowMessageAsync("Error!", "You should select a tournament participant first.");
+            }
+        }
+
+        private async void AddParticipantButton_Click(object sender, RoutedEventArgs e)
         {
             var validationResult = ValidatePersonData();
             if (validationResult.IsValid)
             {
                 var person = CreatePersonModel();
-                await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.CreatePerson(person));
+                await Task.Run(() => person = TournamentTracker.GlobalConfiguration.Connection.CreatePerson(person));
 
+                (DataContext as CreateTeamViewModel).AvailableMembers.Add(person);
+                
                 ClearPersonData();
             }
             else
@@ -43,17 +65,14 @@ namespace TournamentTrackerWPFUI.Views
                 }
 
                 await this.ShowMessageAsync("Form validation result", sb.ToString());
-
             }
-        }
-
-        private void TeamMembersListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
         }
 
         private void TournamentParticipantsListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
         }
+
+        #region Person creation methods
 
         private (bool IsValid, List<string> Errors) ValidatePersonData()
         {
@@ -133,6 +152,71 @@ namespace TournamentTrackerWPFUI.Views
                 LastNameTextBox.Text = 
                 EmailAddressTextBox.Text = 
                 CellphoneNumberTextBox.Text = "";
+        }
+
+        #endregion
+
+        // Todo: Refactoring. Create validation errors message generation as a separate method
+
+        private async void CreateTeamButton_Click(object sender, RoutedEventArgs e)
+        {
+            var teamValidationResult = ValidateTeam();
+            if (teamValidationResult.IsValid)
+            {
+                var team = CreateTeamModel();
+                
+                await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.CreateTeam(team));
+
+                (DataContext as CreateTeamViewModel).SaveTeam();
+            }
+            else
+            {
+                var sb = new StringBuilder("Errors:\n");
+
+                foreach (var error in teamValidationResult.Errors)
+                {
+                    sb.Append("  • ").Append(error).Append(";\n");
+                }
+
+                await this.ShowMessageAsync("Form validation result", sb.ToString());
+            }
+        }
+
+        private TeamModel CreateTeamModel()
+        {
+            return new TeamModel
+            {
+                TeamName = TeamNameTextBox.Text,
+                TeamMembers = (DataContext as CreateTeamViewModel).SelectedMembers.ToList()
+            };
+        }
+
+        private (bool IsValid, List<string> Errors) ValidateTeam()
+        {
+            var teamNotEmpty = (DataContext as CreateTeamViewModel).SelectedMembers.Count > 0;
+            var teamNameIsNotEmpty = !(new string[] { TeamNameTextBox.Text }.IsNullEmptyOrWhitespace());
+            var isValid = teamNotEmpty && teamNameIsNotEmpty;
+
+            List<string> errors = TeamValidationResults(teamNameIsNotEmpty, teamNotEmpty);
+
+            return (isValid, errors);
+        }
+
+        private List<string> TeamValidationResults(bool teamNameIsNotEmpty, bool teamNotEmpty)
+        {
+            var errors = new List<string>();
+
+            if (!teamNotEmpty)
+            {
+                errors.Add("Team can`t be empty. You should add at least one team members.");
+            }
+            
+            if (!teamNameIsNotEmpty)
+            {
+                errors.Add("Team name can`t be empty.");
+            }
+
+            return errors;
         }
     }
 }
