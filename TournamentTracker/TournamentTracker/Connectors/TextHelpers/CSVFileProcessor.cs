@@ -98,5 +98,48 @@ namespace TournamentTracker.Connectors.TextHelpers
 
             return output;
         }
+
+        public static void SaveToTeamsFile(this List<TeamModel> teamModels, string fileName)
+        {
+            var teams = new List<string>();
+
+            foreach (var team in teamModels)
+            {
+                var teamMembersIds = "";
+
+                foreach (var teamMember in team.TeamMembers)
+                {
+                    teamMembersIds += $"{teamMember.Id}|";
+                }
+
+                teams.Add($"{team.Id},{team.TeamName},{teamMembersIds.TrimEnd('|')}");
+            }
+
+            File.WriteAllLines(fileName.GetFilePath(), teams);
+        }
+
+        public static List<TeamModel> ConvertLinesToTeamModels(this List<string> lines, string peopleFileName)
+        {
+            var output = new List<TeamModel>();
+            var participants = peopleFileName.GetFilePath().LoadFile().ConvertLinesToPersonModels();
+
+            foreach (var line in lines)
+            {
+                var cols = line.Split(',');
+                var teamMembersIds = cols[2].Split('|');
+
+                List<PersonModel> teamMembers = new List<PersonModel>();
+                teamMembersIds.ToList().ForEach(x => teamMembers.Add(participants.First(p => p.Id == int.Parse(x))));
+
+                output.Add(new TeamModel
+                {
+                    Id = int.Parse(cols[0]),
+                    TeamName = cols[1],
+                    TeamMembers = teamMembers
+                });
+            }
+
+            return output;
+        }
     }
 }

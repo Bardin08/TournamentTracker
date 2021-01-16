@@ -1,4 +1,5 @@
-﻿using TournamentTracker.Models;
+﻿using System.Collections.Generic;
+using TournamentTracker.Models;
 
 namespace TournamentTracker.Interfaces
 {
@@ -11,14 +12,27 @@ namespace TournamentTracker.Interfaces
         /// Allows to add the prize to the data storage.
         /// </summary>
         /// <param name="prize"> The prize model. </param>
-        /// <returns></returns>
+        /// <returns> Updated prize model with unique identifier. </returns>
         PrizeModel CreatePrize(PrizeModel prize);
 
         /// <summary>
         /// Allows to add the person to the data storage.
         /// </summary>
         /// <param name="person"> The person model. </param>
-        /// <returns></returns>
+        /// <returns> Updated person model with unique identifier.  </returns>
         PersonModel CreatePerson(PersonModel person);
+
+        /// <summary>
+        /// Allows to add a team to the data storage.
+        /// </summary>
+        /// <param name="team"> The team model. </param>
+        /// <returns> Updated team model with unique identifier. </returns>
+        TeamModel CreateTeam(TeamModel team);
+
+        /// <summary>
+        /// Allows to get all participants data from the data storage.
+        /// </summary>
+        /// <returns> The collection of person model. </returns>
+        List<PersonModel> GetAllParticipants();
     }
 }
