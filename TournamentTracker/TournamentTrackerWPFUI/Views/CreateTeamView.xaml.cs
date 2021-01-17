@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using TournamentTracker.Models;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using MahApps.Metro.Controls.Dialogs;
 using TournamentTrackerWPFUI.Helpers;
+using TournamentTrackerWPFUI.Interfaces;
 using TournamentTrackerWPFUI.ViewModels;
 
 namespace TournamentTrackerWPFUI.Views
@@ -20,9 +19,13 @@ namespace TournamentTrackerWPFUI.Views
     /// </summary>
     public partial class CreateTeamView : MetroWindow
     {
-        public CreateTeamView()
+        private readonly ITeamRequester _caller;
+
+        public CreateTeamView(ITeamRequester caller)
         {
             InitializeComponent();
+
+            _caller = caller;
 
             DataContext = new CreateTeamViewModel();
         }
@@ -57,19 +60,8 @@ namespace TournamentTrackerWPFUI.Views
             }
             else
             {
-                var sb = new StringBuilder("Errors:\n");
-
-                foreach (var error in validationResult.Errors)
-                {
-                    sb.Append("  • ").Append(error).Append(";\n");
-                }
-
-                await this.ShowMessageAsync("Form validation result", sb.ToString());
+                await this.ShowMessageAsync("Validation Error!", validationResult.Errors.GetValidationErrorMessage());
             }
-        }
-
-        private void TournamentParticipantsListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
         }
 
         #region Person creation methods
@@ -156,8 +148,6 @@ namespace TournamentTrackerWPFUI.Views
 
         #endregion
 
-        // Todo: Refactoring. Create validation errors message generation as a separate method
-
         private async void CreateTeamButton_Click(object sender, RoutedEventArgs e)
         {
             var teamValidationResult = ValidateTeam();
@@ -166,19 +156,14 @@ namespace TournamentTrackerWPFUI.Views
                 var team = CreateTeamModel();
                 
                 await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.CreateTeam(team));
+                _caller.TeamCreated(team);
 
                 (DataContext as CreateTeamViewModel).SaveTeam();
+                Close();
             }
             else
             {
-                var sb = new StringBuilder("Errors:\n");
-
-                foreach (var error in teamValidationResult.Errors)
-                {
-                    sb.Append("  • ").Append(error).Append(";\n");
-                }
-
-                await this.ShowMessageAsync("Form validation result", sb.ToString());
+                await this.ShowMessageAsync("Validation Error!", teamValidationResult.Errors.GetValidationErrorMessage());
             }
         }
 
