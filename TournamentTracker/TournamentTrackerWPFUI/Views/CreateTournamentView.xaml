@@ -96,34 +96,61 @@
                                FontFamily="Cambria"
                                FontStyle="Normal"
                                FontWeight="SemiBold"/>
-                    <Controls:SplitButton
-                        x:Name="TeamSplitButton"
-                         Width="229"
+                    <ComboBox x:Name="TeamSplitButton"
+                         ItemsSource="{Binding Path=Teams}"
+                         Width="225"
                          Margin="5 0 5 5" 
-                         Padding="3" 
-                         FontSize="16px"
-                         FontFamily="Cambria"
-                         FontStyle="Normal"
-                         FontWeight="SemiBold"/>
+                         IsSynchronizedWithCurrentItem="True">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TeamName, Mode=OneWay}" 
+                                             Width="220"
+                                             FontSize="12px"
+                                             FontFamily="Cambria"
+                                             FontStyle="Normal"
+                                             FontWeight="SemiBold"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3"
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <StackPanel Grid.Row="3"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-
-                    <Button x:Name="AddCommandButton"
-                            Content="Add Command"
-                            Click="AddCommandButton_Click"
+                        <Button x:Name="AddTeamButton"
+                            Content="Add Team"
+                            Click="AddTeamButton_Click"
                             Margin="0 0 15 0"/>
 
-                    <Button x:Name="AddPrizeButton"
+                        <Button x:Name="AddPrizeButton"
                             Content="Add Prize"
-                            Click="AddCommandButton_Click"
+                            Click="AddPrizeButton_Click"
                             Margin="15 0 0 0"
                             Width="{Binding ActualWidth, ElementName=AddCommandButton, Mode=OneWay}"/>
+                    </StackPanel>
 
-                </StackPanel>
+                    <StackPanel Grid.Row="3"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        <Button x:Name="CreateTeamButton"
+                            Content="Create Team"
+                            Click="CreateTeamButton_Click"
+                            Margin="0 0 15 0"/>
+
+                        <Button x:Name="CreatePrizeButton"
+                            Content="Create Prize"
+                            Click="CreatePrizeButton_Click"
+                            Margin="15 0 0 0"
+                            Width="{Binding ActualWidth, ElementName=AddCommandButton, Mode=OneWay}"/>
+                    </StackPanel>
+
+                </StackPanel> 
 
                 <StackPanel Grid.Row="4"
                             Orientation="Vertical"
@@ -155,16 +182,16 @@
 
                         <ListBox x:Name="TeamsListBox"
                              Style= "{StaticResource MahApps.Styles.ListBox}"
-                             ItemsSource="{Binding }"
-                             SelectionChanged="TeamsListBox_SelectionChanged"
-                             Height="{Binding ActualHeight, ElementName=TeamsListContainer, Mode=OneWay}">
+                             IsSynchronizedWithCurrentItem="True"
+                             ItemsSource="{Binding Path=Teams}"
+                             Height="124">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel 
                                     Margin="5" 
                                     Orientation="Horizontal" 
-                                    HorizontalAlignment="Center">
-                                        <TextBlock x:Name="MatchTextBlock"
+                                    HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding TeamName}"
                                                    Margin="5"
                                                    Padding="3"
                                                    FontSize="16px"
@@ -192,16 +219,31 @@
 
                         <ListBox x:Name="PrizesListBox"
                              Style= "{StaticResource MahApps.Styles.ListBox}"
-                             ItemsSource="{Binding }"
-                             SelectionChanged="PrizesListBox_SelectionChanged"
-                             Height="{Binding ActualHeight, ElementName=PrizesListContainer, Mode=OneWay}">
+                             ItemsSource="{Binding Path=Prizes}"
+                             Height="127">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel 
                                     Margin="5" 
                                     Orientation="Horizontal" 
-                                    HorizontalAlignment="Center">
-                                        <TextBlock x:Name="MatchTextBlock"
+                                    HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding PlaceNumber}"
+                                                   Margin="5"
+                                                   Padding="3"
+                                                   FontSize="16px"
+                                                   FontStyle="Normal"
+                                                   FontFamily="Cambria"
+                                                   FontWeight="SemiBold"/>
+                                        
+                                        <TextBlock Text=" "
+                                                   Margin="5"
+                                                   Padding="3"
+                                                   FontSize="16px"
+                                                   FontStyle="Normal"
+                                                   FontFamily="Cambria"
+                                                   FontWeight="SemiBold"/>
+
+                                        <TextBlock Text="{Binding PrizeName}"
                                                    Margin="5"
                                                    Padding="3"
                                                    FontSize="16px"
