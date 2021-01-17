@@ -5,6 +5,10 @@ namespace TournamentTracker.Models
     public class TournamentModel
     {
         /// <summary>
+        /// Represents tournament unique identifier.
+        /// </summary>
+        public int Id { get; set; }
+        /// <summary>
         /// Represents the tournament name.
         /// </summary>
         public string TournamentName { get; set; }
