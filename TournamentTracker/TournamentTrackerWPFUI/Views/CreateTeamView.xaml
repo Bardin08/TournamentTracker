@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
             Title="Tournament"
-            Height="550"
+            Height="600"
             Width="600"
             GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
             WindowStartupLocation="CenterScreen"

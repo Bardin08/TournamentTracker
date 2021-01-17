@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
+﻿using System.Windows;
 using TournamentTracker;
+using System.Threading.Tasks;
+using MahApps.Metro.Controls;
 using TournamentTracker.Models;
+using System.Collections.Generic;
+using MahApps.Metro.Controls.Dialogs;
 using TournamentTrackerWPFUI.Helpers;
+using TournamentTrackerWPFUI.Interfaces;
 
 namespace TournamentTrackerWPFUI.Views
 {
@@ -15,9 +15,12 @@ namespace TournamentTrackerWPFUI.Views
     /// </summary>
     public partial class CreatePrizeView : MetroWindow
     {
-        public CreatePrizeView()
+        private readonly IPrizeRequester _caller;
+
+        public CreatePrizeView(IPrizeRequester caller)
         {
             InitializeComponent();
+            _caller = caller;
             ClearForm();
         }
 
@@ -26,21 +29,16 @@ namespace TournamentTrackerWPFUI.Views
             var validationResult = ValidateForm();
             if (validationResult.IsValid)
             {
-                var model = CreatePrizeModelFromFrom();
-                await Task.Run(() => GlobalConfiguration.Connection.CreatePrize(model));
+                var prize = CreatePrizeModelFromFrom();
+                await Task.Run(() => GlobalConfiguration.Connection.CreatePrize(prize));
 
-                ClearForm();
+                _caller.PrizeCreated(prize);
+
+                Close();
             }
             else
             {
-                var sb = new StringBuilder("Errors:\n");
-
-                foreach (var error in validationResult.Errors)
-                {
-                    sb.Append("  • ").Append(error).Append(";\n");
-                }
-
-                await this.ShowMessageAsync("Form validation result", sb.ToString());
+                await this.ShowMessageAsync("Validation Error", validationResult.Errors.GetValidationErrorMessage());
             }
         }
 
