@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TournamentTracker.Models;
 using TournamentTracker.Interfaces;
 using TournamentTracker.Connectors.TextHelpers;
+using System;
 
 namespace TournamentTracker.Connectors
 {
@@ -14,10 +15,11 @@ namespace TournamentTracker.Connectors
         private const string PrizesFileName = "PrizeModels.csv";
         private const string PeopleFileName = "PeopleModels.csv";
         private const string TeamsFileName = "TeamModels.csv";
+        private const string TournamentsFileName = "TournamentsModels.csv";
 
         public PersonModel CreatePerson(PersonModel person)
         {
-            List<PersonModel> people = PeopleFileName.GetFilePath().LoadFile().ConvertLinesToPersonModels();
+            List<PersonModel> people = PeopleFileName.GetFilePath().LoadFile().ToPersonModels();
 
             var lastId = 0;
 
@@ -36,7 +38,7 @@ namespace TournamentTracker.Connectors
 
         public PrizeModel CreatePrize(PrizeModel prize)
         {
-            List<PrizeModel> prizes = PrizesFileName.GetFilePath().LoadFile().ConvertLinesToPrizeModels();
+            List<PrizeModel> prizes = PrizesFileName.GetFilePath().LoadFile().ToPrizeModels();
             var lastPrizeId = 0;
             
             if (prizes.Count > 0)
@@ -54,7 +56,7 @@ namespace TournamentTracker.Connectors
 
         public TeamModel CreateTeam(TeamModel team)
         {
-            var teams = TeamsFileName.GetFilePath().LoadFile().ConvertLinesToTeamModels(PeopleFileName);
+            var teams = TeamsFileName.GetFilePath().LoadFile().ToTeamModels(PeopleFileName);
 
             int lastId = 0;
 
@@ -71,9 +73,38 @@ namespace TournamentTracker.Connectors
             return team;
         }
 
+        public TournamentModel CreateTournament(TournamentModel tournament)
+        {
+            // TODO: Change 3-rd parameter from "" to matchesFileName
+            var tournaments = TournamentsFileName.GetFilePath().LoadFile().ToTournamentModels(TeamsFileName, PrizesFileName, "", PeopleFileName);
+
+            int lastId = 0;
+
+            if (tournaments.Count > 0)
+            {
+                lastId = tournaments.OrderByDescending(x => x.Id).First().Id;
+            }
+
+            tournament.Id = lastId + 1;
+            tournaments.Add(tournament);
+            tournaments.SaveToTournamentsFile(TournamentsFileName, TeamsFileName, PrizesFileName, "");
+
+            return tournament;
+        }
+
         public List<PersonModel> GetAllParticipants()
         {
-            return PeopleFileName.GetFilePath().LoadFile().ConvertLinesToPersonModels();
+            return PeopleFileName.GetFilePath().LoadFile().ToPersonModels();
+        }
+
+        public List<PrizeModel> GetPrizes()
+        {
+            return PrizesFileName.GetFilePath().LoadFile().ToPrizeModels();
+        }
+
+        public List<TeamModel> GetTeams()
+        {
+            return TeamsFileName.GetFilePath().LoadFile().ToTeamModels(PeopleFileName);
         }
     }
 }

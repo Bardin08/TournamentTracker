@@ -44,7 +44,7 @@ namespace TournamentTracker.Connectors.TextHelpers
             File.WriteAllLinesAsync(fileName.GetFilePath(), lines);
         }
 
-        public static List<PrizeModel> ConvertLinesToPrizeModels(this List<string> lines)
+        public static List<PrizeModel> ToPrizeModels(this List<string> lines)
         {
             var output = new List<PrizeModel>();
 
@@ -78,7 +78,7 @@ namespace TournamentTracker.Connectors.TextHelpers
             File.WriteAllLines(fileName.GetFilePath(), lines);
         }
 
-        public static List<PersonModel> ConvertLinesToPersonModels(this List<string> lines)
+        public static List<PersonModel> ToPersonModels(this List<string> lines)
         {
             var output = new List<PersonModel>();
 
@@ -118,10 +118,10 @@ namespace TournamentTracker.Connectors.TextHelpers
             File.WriteAllLines(fileName.GetFilePath(), teams);
         }
 
-        public static List<TeamModel> ConvertLinesToTeamModels(this List<string> lines, string peopleFileName)
+        public static List<TeamModel> ToTeamModels(this List<string> lines, string peopleFileName)
         {
             var output = new List<TeamModel>();
-            var participants = peopleFileName.GetFilePath().LoadFile().ConvertLinesToPersonModels();
+            var participants = peopleFileName.GetFilePath().LoadFile().ToPersonModels();
 
             foreach (var line in lines)
             {
@@ -140,6 +140,64 @@ namespace TournamentTracker.Connectors.TextHelpers
             }
 
             return output;
+        }
+
+        public static List<TournamentModel> ToTournamentModels(this List<string> lines, string teamsFileName, 
+            string prizesFileName, string matchesFileName, string peopleFileName)
+        {
+            // Tournament record example: id,tournament name,entry fee,teams,prizes,matches
+            //                             1,Test tournament,10,1|2|3|4,2|3|5,1|3;2|4
+
+            var output = new List<TournamentModel>();
+
+            var allTeams = teamsFileName.GetFilePath().LoadFile().ToTeamModels(peopleFileName);
+            var allPrizes = prizesFileName.GetFilePath().LoadFile().ToPrizeModels();
+
+            foreach (var line in lines)
+            {
+                var cols = line.Split(',');
+
+                var teamsIds = cols[4].Split('|');
+                var tournamentTeams = new List<TeamModel>();
+                teamsIds.ToList().ForEach(id => tournamentTeams.Add(allTeams.First(p => p.Id == int.Parse(id))));
+
+                var prizesIds = cols[5].Split('|');
+                var tournamentPrizes = new List<PrizeModel>();
+                prizesIds.ToList().ForEach(id => tournamentPrizes.Add(allPrizes.First(p => p.Id == int.Parse(id))));
+
+                output.Add(new TournamentModel
+                {
+                    Id = int.Parse(cols[0]),
+                    TournamentName = cols[1],
+                    EntryFee = decimal.Parse(cols[2]),
+                    EnteredTeams = tournamentTeams,
+                    Prizes = tournamentPrizes,
+                    Rounds = new List<List<MatchModel>>()
+                });
+            }
+
+            return output;
+        }
+
+        public static void SaveToTournamentsFile(this List<TournamentModel> tournaments, string fileName, string teamsFileName,
+            string prizesFileName, string matchesFileName)
+        {
+            var lines = new List<string>();
+            foreach (var t in tournaments)
+            {
+                t.EnteredTeams.SaveToTeamsFile(teamsFileName);
+                t.Prizes.SaveToPrizesFile(prizesFileName);
+
+                var teamsIds = "";
+                t.EnteredTeams.ForEach(team => teamsIds += $"{team.Id}|");
+
+                var prizesIds = "";
+                t.Prizes.ForEach(prize => prizesIds += $"{prize.Id}|");
+
+                lines.Add($"{t.Id},{t.TournamentName},{t.EntryFee},{teamsIds.TrimEnd('|')},{prizesIds.TrimEnd('|')}");
+            }
+
+            File.WriteAllLines(fileName.GetFilePath(), lines);
         }
     }
 }
