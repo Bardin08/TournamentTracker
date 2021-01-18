@@ -274,7 +274,6 @@
                              Style= "{StaticResource MahApps.Styles.ListBox}"
                              ItemsSource="{Binding AvailableMembers}"
                              IsSynchronizedWithCurrentItem="True"
-                             SelectionChanged="TournamentParticipantsListBox_SelectionChanged"
                              Height="179">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>

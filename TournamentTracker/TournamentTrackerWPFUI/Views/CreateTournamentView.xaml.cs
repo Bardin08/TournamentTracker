@@ -30,7 +30,6 @@ namespace TournamentTrackerWPFUI.Views
 
         private async void CreateTournamentButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate form
             var validationResult = ValidateTournament();
             if (validationResult.IsValid)
             {
@@ -39,27 +38,29 @@ namespace TournamentTrackerWPFUI.Views
 
                 // Open next window
 
-                Close();
+                await this.ShowMessageAsync("", "Tournament successfully created");
 
             }
             else
             {
                 await this.ShowMessageAsync("Validation Error!", validationResult.Errors.GetValidationErrorMessage());
             }
-
-
-            // Create tournament model
-            // Add data to the data source
         }
 
         private void AddTeamButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.AddTeamToTournament(TeamsListBox.SelectedItem as TeamModel);
+            if ((TeamsListBox.SelectedItem as TeamModel) != null)
+            {
+                _viewModel.AddTeamToTournament(TeamsListBox.SelectedItem as TeamModel);
+            }
         }
 
         private void AddPrizeButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.AddPrizeToTournament(PrizesListBox.SelectedItem as PrizeModel);
+            if ((PrizesListBox.SelectedItem as PrizeModel) != null)
+            {
+                _viewModel.AddPrizeToTournament(PrizesListBox.SelectedItem as PrizeModel);
+            }
         }
 
         private void CreateTeamButton_Click(object sender, RoutedEventArgs e)
@@ -76,7 +77,7 @@ namespace TournamentTrackerWPFUI.Views
 
         private (bool IsValid, List<string> Errors) ValidateTournament()
         {
-            var fieldsAreNotEmpty = !(new string[] { TournamentNameTextBox.Text, EntryFeeTextBox.Text }.IsNullEmptyOrWhitespace());
+            var fieldsAreNotEmpty = !(new [] { TournamentNameTextBox.Text, EntryFeeTextBox.Text }.IsNullEmptyOrWhitespace());
             var atLeastTwoTeams = _viewModel.SelectedTeams.Count >= 2;
             var entryFeeIsValid = decimal.TryParse(EntryFeeTextBox.Text, out decimal fee) && fee >= 0; 
 
@@ -111,6 +112,8 @@ namespace TournamentTrackerWPFUI.Views
 
         private TournamentModel CreateTournamentModel()
         {
+            _viewModel.SelectedPrizes.ToList().RemoveAll(x => x == null);
+            _viewModel.SelectedTeams.ToList().RemoveAll(x => x == null);
             return new TournamentModel
             {
                 TournamentName = TournamentNameTextBox.Text,
