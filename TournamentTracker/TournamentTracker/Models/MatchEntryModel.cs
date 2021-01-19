@@ -3,6 +3,10 @@
     public class MatchEntryModel
     {
         /// <summary>
+        /// Represents the unique identifier for match entry model.
+        /// </summary>
+        public int Id { get; set; }
+        /// <summary>
         /// Represents one team in the match.
         /// </summary>
         public TeamModel CompetingTeam { get; set; }
