@@ -7,6 +7,17 @@ namespace TournamentTracker
     /// </summary>
     public static class GlobalConfiguration
     {
+        #region Text file names
+
+        public const string PrizesFileName = "PrizeModels.csv";
+        public const string PeopleFileName = "PeopleModels.csv";
+        public const string TeamsFileName = "TeamModels.csv";
+        public const string TournamentsFileName = "TournamentsModels.csv";
+        public const string MatchesFileName = "Matchups.csv";
+        public const string MatchEntriesFileName = "MatchupEntries.csv";
+
+        #endregion
+
         /// <summary>
         /// Connector for access to the data storage. 
         /// </summary>
