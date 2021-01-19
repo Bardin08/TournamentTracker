@@ -34,10 +34,10 @@ namespace TournamentTrackerWPFUI.Views
             if (validationResult.IsValid)
             {
                 var tournament = CreateTournamentModel();
+
+                TournamentTracker.Logic.TournamentLogic.CreateRounds(tournament);                
+                
                 await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.CreateTournament(tournament));
-
-                // Open next window
-
                 await this.ShowMessageAsync("", "Tournament successfully created");
 
             }
