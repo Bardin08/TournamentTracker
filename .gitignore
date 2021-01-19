@@ -349,3 +349,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 *.Config
+TournamentTracker/Database/TablesCreationScripts/desktop.ini
+TournamentTracker/Database/
