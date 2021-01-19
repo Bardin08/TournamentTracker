@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -92,8 +93,55 @@ namespace TournamentTracker.Connectors
                 tournament = SaveTournament(tournament, connection);
                 SaveTournamentPrizes(tournament, connection);
                 SaveTournamentTeams(tournament, connection);
+                SaveTournamentRounds(tournament, connection);
             }
             return tournament;
+        }
+
+        private void SaveTournamentRounds(TournamentModel tournament, SqlConnection connection)
+        {
+            foreach (var round in tournament.Rounds)
+            {
+                foreach (var match in round)
+                {
+                    var p = new DynamicParameters();
+
+                    p.Add("@MatchRound", match.RoundNumber);
+                    p.Add("@TournamentId", tournament.Id);
+                    p.Add("@id", 0, DbType.Int32, ParameterDirection.Output);
+
+                    connection.Execute("dbo.spMatches_Insert", p, commandType: CommandType.StoredProcedure);
+
+                    match.Id = p.Get<int>("@id");
+
+                    foreach (var matchEntry in match.Entries)
+                    {
+                        p = new DynamicParameters();
+
+                        p.Add("@MatchId", match.Id);
+                        if (matchEntry.ParentMatch == null)
+                        {
+                            p.Add("@ParentMatchId", null);
+                        }
+                        else
+                        {
+                            p.Add("@ParentMatchId", matchEntry.ParentMatch.Id);
+                        }
+
+                        if (matchEntry.CompetingTeam == null)
+                        {
+                            p.Add("@TeamCompetitingId", null);
+                        }
+                        else
+                        {
+                            p.Add("@TeamCompetitingId", matchEntry.CompetingTeam.Id);
+                        }
+                        p.Add("@id", 0, DbType.Int32, ParameterDirection.Output);
+
+                        connection.Execute("dbo.spMatchEntries_Insert", p, commandType: CommandType.StoredProcedure);
+                    }
+                }
+            }
         }
 
         public List<PersonModel> GetAllParticipants()
@@ -111,7 +159,8 @@ namespace TournamentTracker.Connectors
                 return connection.Query<PrizeModel>("dbo.spPrizes_GetAll").ToList();
             }
         }
-
+        
+        // BUG: Check if team members are load
         public List<TeamModel> GetTeams()
         {
             using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
