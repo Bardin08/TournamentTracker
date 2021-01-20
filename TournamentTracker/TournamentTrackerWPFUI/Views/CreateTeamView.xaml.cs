@@ -52,7 +52,7 @@ namespace TournamentTrackerWPFUI.Views
             if (validationResult.IsValid)
             {
                 var person = CreatePersonModel();
-                await Task.Run(() => person = TournamentTracker.GlobalConfiguration.Connection.CreatePerson(person));
+                await Task.Run(() => person = TournamentTracker.GlobalConfiguration.Connection.SavePerson(person));
 
                 (DataContext as CreateTeamViewModel).AvailableMembers.Add(person);
                 
@@ -155,7 +155,7 @@ namespace TournamentTrackerWPFUI.Views
             {
                 var team = CreateTeamModel();
                 
-                await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.CreateTeam(team));
+                await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.SaveTeam(team));
                 _caller.TeamCreated(team);
 
                 (DataContext as CreateTeamViewModel).SaveTeam();

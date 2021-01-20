@@ -1,11 +1,10 @@
 ﻿using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using TournamentTracker.Interfaces;
+using System.Data.SqlClient;
 using TournamentTracker.Models;
+using System.Collections.Generic;
+using TournamentTracker.Interfaces;
 
 namespace TournamentTracker.Connectors
 {
@@ -16,7 +15,7 @@ namespace TournamentTracker.Connectors
     {
         private const string DatabaseName = "Tournaments";
 
-        public PersonModel CreatePerson(PersonModel person)
+        public PersonModel SavePerson(PersonModel person)
         {
             using (var connection =
                 new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
@@ -37,7 +36,7 @@ namespace TournamentTracker.Connectors
             }
         }
 
-        public PrizeModel CreatePrize(PrizeModel prize)
+        public PrizeModel SavePrize(PrizeModel prize)
         {
             using (var connection =
                 new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
@@ -59,7 +58,7 @@ namespace TournamentTracker.Connectors
             }
         }
 
-        public TeamModel CreateTeam(TeamModel team)
+        public TeamModel SaveTeam(TeamModel team)
         {
             using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
             {
@@ -86,7 +85,7 @@ namespace TournamentTracker.Connectors
             }
         }
 
-        public TournamentModel CreateTournament(TournamentModel tournament)
+        public TournamentModel SaveTournament(TournamentModel tournament)
         {
             using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
             {
@@ -116,32 +115,38 @@ namespace TournamentTracker.Connectors
 
                     foreach (var matchEntry in match.Entries)
                     {
-                        p = new DynamicParameters();
-
-                        p.Add("@MatchId", match.Id);
-                        if (matchEntry.ParentMatch == null)
-                        {
-                            p.Add("@ParentMatchId", null);
-                        }
-                        else
-                        {
-                            p.Add("@ParentMatchId", matchEntry.ParentMatch.Id);
-                        }
-
-                        if (matchEntry.CompetingTeam == null)
-                        {
-                            p.Add("@TeamCompetitingId", null);
-                        }
-                        else
-                        {
-                            p.Add("@TeamCompetitingId", matchEntry.CompetingTeam.Id);
-                        }
-                        p.Add("@id", 0, DbType.Int32, ParameterDirection.Output);
-
-                        connection.Execute("dbo.spMatchEntries_Insert", p, commandType: CommandType.StoredProcedure);
+                        SaveMatchEntry(connection, match, matchEntry);
                     }
                 }
             }
+        }
+
+        private void SaveMatchEntry(SqlConnection connection, MatchModel match, MatchEntryModel matchEntry)
+        {
+            DynamicParameters p = new DynamicParameters();
+
+            p.Add("@MatchId", match.Id);
+
+            if (matchEntry.ParentMatch == null)
+            {
+                p.Add("@ParentMatchId", null);
+            }
+            else
+            {
+                p.Add("@ParentMatchId", matchEntry.ParentMatch.Id);
+            }
+
+            if (matchEntry.CompetingTeam == null)
+            {
+                p.Add("@TeamCompetitingId", null);
+            }
+            else
+            {
+                p.Add("@TeamCompetitingId", matchEntry.CompetingTeam.Id);
+            }
+            p.Add("@id", 0, DbType.Int32, ParameterDirection.Output);
+
+            connection.Execute("dbo.spMatchEntries_Insert", p, commandType: CommandType.StoredProcedure);
         }
 
         public List<PersonModel> GetAllParticipants()
@@ -160,7 +165,6 @@ namespace TournamentTracker.Connectors
             }
         }
         
-        // BUG: Check if team members are load
         public List<TeamModel> GetTeams()
         {
             using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))

@@ -30,7 +30,7 @@ namespace TournamentTrackerWPFUI.Views
             if (validationResult.IsValid)
             {
                 var prize = CreatePrizeModelFromFrom();
-                await Task.Run(() => GlobalConfiguration.Connection.CreatePrize(prize));
+                await Task.Run(() => GlobalConfiguration.Connection.SavePrize(prize));
 
                 _caller.PrizeCreated(prize);
 
