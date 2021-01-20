@@ -19,9 +19,13 @@ namespace TournamentTrackerWPFUI.Views
         private readonly CreateTournamentViewModel _viewModel = 
             new CreateTournamentViewModel(TournamentTracker.GlobalConfiguration.Connection);
 
-        public CreateTournament()
+        private readonly ITournamentRequester _caller;
+
+        public CreateTournament(ITournamentRequester caller)
         {
             InitializeComponent();
+
+            _caller = caller;
 
             DataContext = _viewModel;
         }
@@ -38,8 +42,10 @@ namespace TournamentTrackerWPFUI.Views
                 TournamentTracker.Logic.TournamentLogic.CreateRounds(tournament);
 
                 await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.SaveTournament(tournament));
+                _caller.TournamentCreated(tournament);
                 await this.ShowMessageAsync("", "Tournament successfully created");
 
+                Close();
             }
             else
             {

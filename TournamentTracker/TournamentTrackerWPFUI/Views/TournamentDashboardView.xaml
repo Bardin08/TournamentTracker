@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TournamentTrackerWPFUI.Views"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
             Title="Dashboard"
@@ -33,22 +32,29 @@
                             Orientation="Vertical"
                             HorizontalAlignment="Center">
             <TextBlock Text="Select a Tournament:"
-                               Width="350"
-                               Margin="5 5 5 0" 
-                               Padding="3" 
-                               FontSize="16px"
-                               FontFamily="Cambria"
-                               FontStyle="Normal"
-                               FontWeight="SemiBold"/>
-            <Controls:SplitButton
-                        x:Name="TeamSplitButton"
-                         Width="350"
-                         Margin="5 0 5 5" 
-                         Padding="3" 
-                         FontSize="16px"
-                         FontFamily="Cambria"
-                         FontStyle="Normal"
-                         FontWeight="SemiBold"/>
+                       Width="350"
+                       Margin="5 5 5 0" 
+                       Padding="3" 
+                       FontSize="16px"
+                       FontFamily="Cambria"
+                       FontStyle="Normal"
+                       FontWeight="SemiBold"/>
+
+            <ComboBox x:Name="TeamSplitButton"
+                      Width="350"
+                      ItemsSource="{Binding Path=Tournaments}"
+                      Margin="5 0 5 5">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding TournamentName, Mode=OneWay}" 
+                                   Width="220"
+                                   FontSize="12px"
+                                   FontFamily="Cambria"
+                                   FontStyle="Normal"
+                                   FontWeight="SemiBold"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <Button x:Name="LoadTournamentButton"
                     Width="350"

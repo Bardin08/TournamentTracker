@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
+using TournamentTracker.Models;
 
 namespace TournamentTrackerWPFUI.Views
 {
@@ -8,7 +8,7 @@ namespace TournamentTrackerWPFUI.Views
     /// </summary>
     public partial class TournamentViewerView : MetroWindow
     {
-        public TournamentViewerView()
+        public TournamentViewerView(TournamentModel tournament)
         {
             InitializeComponent();
         }
