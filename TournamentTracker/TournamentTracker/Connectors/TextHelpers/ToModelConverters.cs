@@ -1,7 +1,7 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
 using TournamentTracker.Models;
+using static TournamentTracker.Connectors.TextHelpers.DataLoaders;
 
 namespace TournamentTracker.Connectors.TextHelpers
 {
@@ -13,16 +13,18 @@ namespace TournamentTracker.Connectors.TextHelpers
 
             foreach (var line in lines)
             {
-                var cols = line.Split(',');
+                string[] cols = line.Split(',');
 
-                output.Add(new PersonModel
+                var model = new PersonModel
                 {
                     Id = int.Parse(cols[0]),
                     FirstName = cols[1],
                     LastName = cols[2],
                     EmailAddress = cols[3],
                     CellphoneNumber = cols[4]
-                });
+                };
+
+                output.Add(model);
             }
 
             return output;
@@ -34,9 +36,9 @@ namespace TournamentTracker.Connectors.TextHelpers
 
             foreach (var line in lines)
             {
-                var cols = line.Split(',');
+                string[] cols = line.Split(',');
 
-                output.Add(new PrizeModel()
+                var model = new PrizeModel
                 {
                     Id = int.Parse(cols[0]),
                     PlaceNumber = int.Parse(cols[1]),
@@ -44,108 +46,7 @@ namespace TournamentTracker.Connectors.TextHelpers
                     PrizeName = cols[3],
                     PrizeAmount = decimal.Parse(cols[4]),
                     PrizePercentage = double.Parse(cols[5])
-                });
-            }
-
-            return output;
-        }
-
-        // BUG: Check if team members are load
-        public static List<TeamModel> ToTeamModels(this List<string> lines)
-        {
-            var output = new List<TeamModel>();
-            var participants = GlobalConfiguration.PeopleFileName
-                .GetFilePath()
-                .LoadFile()
-                .ToPersonModels();
-
-            foreach (var line in lines)
-            {
-                var cols = line.Split(',');
-                var teamMembersIds = cols[2].Split('|');
-
-                List<PersonModel> teamMembers = new List<PersonModel>();
-                teamMembersIds.ToList()
-                    .ForEach(x => teamMembers.Add(participants.First(p => p.Id == int.Parse(x))));
-
-                output.Add(new TeamModel
-                {
-                    Id = int.Parse(cols[0]),
-                    TeamName = cols[1],
-                    TeamMembers = teamMembers
-                });
-            }
-
-            return output;
-        }
-
-        public static List<TournamentModel> ToTournamentModels(this List<string> lines)
-        {
-            #region Load previous records from files
-
-            var output = new List<TournamentModel>();
-            var allTeams = GlobalConfiguration.TeamsFileName
-                .GetFilePath()
-                .LoadFile()
-                .ToTeamModels();
-            var allPrizes = GlobalConfiguration.PrizesFileName
-                .GetFilePath()
-                .LoadFile()
-                .ToPrizeModels();
-            var matches = GlobalConfiguration.MatchesFileName
-                .GetFilePath()
-                .LoadFile()
-                .ToMatchModels();
-            var matchEntries = GlobalConfiguration.MatchEntriesFileName
-                .GetFilePath()
-                .LoadFile()
-                .ToMatchEntryModels();
-
-            #endregion
-
-            foreach (var line in lines)
-            {
-                var cols = line.Split(',');
-
-                var teamsIds = cols[3].Split('|');
-                var tournamentTeams = new List<TeamModel>();
-                teamsIds.ToList().ForEach(id => tournamentTeams.Add(allTeams.First(p => p.Id == int.Parse(id))));
-
-                var prizesIds = cols[4].Split('|');
-                var tournamentPrizes = new List<PrizeModel>();
-
-                if (allPrizes.Count > 0)
-                {
-                    prizesIds.ToList().ForEach(id => tournamentPrizes.Add(allPrizes.First(p => p.Id == int.Parse(id))));
-                }
-                else
-                {
-                    tournamentPrizes = new List<PrizeModel>();
-                }
-
-                var rounds = cols[5].Split('|');
-
-                var model = new TournamentModel
-                {
-                    Id = int.Parse(cols[0]),
-                    TournamentName = cols[1],
-                    EntryFee = decimal.Parse(cols[2]),
-                    EnteredTeams = tournamentTeams,
-                    Prizes = tournamentPrizes,
                 };
-
-                var ms = new List<MatchModel>();
-                foreach (var round in rounds)
-                {
-                    var msText = round.Split('^');
-
-                    foreach (var matchModelTextId in msText)
-                    {
-                        ms.Add(matches.First(x => x.Id == int.Parse(matchModelTextId)));
-                    }
-
-                    model.Rounds.Add(ms);
-                }
 
                 output.Add(model);
             }
@@ -153,7 +54,59 @@ namespace TournamentTracker.Connectors.TextHelpers
             return output;
         }
 
-        private static List<MatchEntryModel> ToMatchEntryModels(string input)
+        public static List<TeamModel> ToTeamModels(this List<string> lines)
+        {
+            var output = new List<TeamModel>();
+
+            foreach (var line in lines)
+            {
+                string[] cols = line.Split(',');
+                
+                List<PersonModel> teamMembers = cols[2].Split('|').GetParticipantsByIds();
+
+                var model = new TeamModel
+                {
+                    Id = int.Parse(cols[0]),
+                    TeamName = cols[1],
+                    TeamMembers = teamMembers
+                };
+
+                output.Add(model);
+            }
+
+            return output;
+        }
+
+        public static List<TournamentModel> ToTournamentModels(this List<string> lines)
+        {
+            var output = new List<TournamentModel>();
+
+            foreach (var line in lines)
+            {
+                string[] cols = line.Split(',');
+
+                List<TeamModel> teams = cols[3].Split('|').GetTeamsByIds();
+                List<PrizeModel> prizes = cols[4].Split('|').GetPrizesByIds();
+                List<List<MatchModel>> rounds = cols[5].Split('|').GetRounds();
+
+                var model = new TournamentModel
+                {
+                    Id = int.Parse(cols[0]),
+                    TournamentName = cols[1],
+                    EntryFee = decimal.Parse(cols[2]),
+                    EnteredTeams = teams,
+                    Prizes = prizes,
+                    Rounds = rounds
+                };
+
+                output.Add(model);
+            }
+
+            return output;
+        }
+
+        [System.Obsolete]
+        private static List<MatchEntryModel> ToMatchEntryModel(string input)
         {
             var output = new List<MatchEntryModel>();
             List<MatchEntryModel> entries = GlobalConfiguration.MatchEntriesFileName
@@ -177,27 +130,24 @@ namespace TournamentTracker.Connectors.TextHelpers
 
             foreach (var line in lines)
             {
-                var cols = line.Split(',');
+                string[] cols = line.Split(',');
 
-                MatchEntryModel model = new MatchEntryModel();
+                MatchEntryModel model = new MatchEntryModel
+                {
+                    Id = int.Parse(cols[0]),
+                    Score = double.Parse(cols[2]),
+                    CompetingTeam = null,
+                    ParentMatch = null
+                };
 
-                model.Id = int.Parse(cols[0]);
-
-                model.CompetingTeam = null;
                 if (int.TryParse(cols[1], out int teamId))
                 {
                     model.CompetingTeam = GetTeamById(teamId);
                 }
                 
-                model.Score = double.Parse(cols[2]);
-
                 if (int.TryParse(cols[3], out int id))
                 {
                     model.ParentMatch = GetMatchById(id);
-                }
-                else
-                {
-                    model.ParentMatch = null;
                 }
 
                 output.Add(model);
@@ -209,10 +159,6 @@ namespace TournamentTracker.Connectors.TextHelpers
         public static List<MatchModel> ToMatchModels(this List<string> lines)
         {
             List<MatchModel> output = new List<MatchModel>();
-            var entries = GlobalConfiguration.MatchEntriesFileName
-                .GetFilePath()
-                .LoadFile()
-                .ToMatchEntryModels();
 
             foreach (var line in lines)
             {
@@ -221,51 +167,22 @@ namespace TournamentTracker.Connectors.TextHelpers
                 var model = new MatchModel
                 {
                     Id = int.Parse(cols[0]),
-                    RoundNumber = int.Parse(cols[3])
+                    RoundNumber = int.Parse(cols[3]),
+                    Winner = null
                 };
 
-                var entriesIds = cols[1].Split('|');
-                foreach (var entryId in entriesIds)
-                {
-                    model.Entries.Add(entries
-                        .Where(e => e.Id == int.Parse(entryId))
-                        .First());
-                }
+                List<MatchEntryModel> entries = cols[1].Split('|').GetEntriesByIds();
+                model.Entries.AddRange(entries);
 
                 if (int.TryParse(cols[2], out int id))
                 {
                     model.Winner = GetTeamById(id);
-                }
-                else
-                {
-                    model.Winner = null;
                 }
 
                 output.Add(model);
             }
 
             return output;
-        }
-
-        private static TeamModel GetTeamById(int teamId)
-        {
-            var teams = GlobalConfiguration.TeamsFileName
-                .GetFilePath()
-                .LoadFile()
-                .ToTeamModels();
-
-            // TODO: Change to custom Exception
-            return teams.First(x => x.Id == teamId) ?? throw new Exception("Team with id " + teamId + " not found.");
-        }
-
-        private static MatchModel GetMatchById(int matchId)
-        {
-            var matches = GlobalConfiguration.MatchesFileName
-                .GetFilePath()
-                .LoadFile()
-                .ToMatchModels();
-
-            return matches.First(x => x.Id == matchId);
         }
     }
 }
