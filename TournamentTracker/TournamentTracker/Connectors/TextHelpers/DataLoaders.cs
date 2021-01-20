@@ -36,7 +36,6 @@ namespace TournamentTracker.Connectors.TextHelpers
                 .LoadFile()
                 .ToTeamModels();
 
-            // TODO: Change to custom Exception
             return teams.First(x => x.Id == teamId) ?? throw new Exception("Team with id " + teamId + " not found.");
         }
 

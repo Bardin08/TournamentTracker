@@ -53,7 +53,6 @@ namespace TournamentTracker.Connectors.TextHelpers
             var lines = new List<string>();
             foreach (var t in tournaments)
             {
-                // TODO: Move ids generate to a separate method which will generate ids to each type
                 t.EnteredTeams.TeamsToLines().SaveToFile(GlobalConfiguration.TeamsFileName);
                 t.Prizes.PrizesToLines().SaveToFile(GlobalConfiguration.PrizesFileName);
 
@@ -64,8 +63,6 @@ namespace TournamentTracker.Connectors.TextHelpers
                 }
 
                 var prizesIds = "";
-                t.Prizes.ForEach(prize => prizesIds += $"{prize.Id}|");
-
                 foreach (var prize in t.Prizes)
                 { 
                     prizesIds += $"{prize.Id}|";
