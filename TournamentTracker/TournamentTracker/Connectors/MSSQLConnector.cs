@@ -16,7 +16,7 @@ namespace TournamentTracker.Connectors
     {
         private const string DatabaseName = "Tournaments";
 
-        public PersonModel CreatePerson(PersonModel person)
+        public PersonModel SavePerson(PersonModel person)
         {
             using (var connection =
                 new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
@@ -37,7 +37,7 @@ namespace TournamentTracker.Connectors
             }
         }
 
-        public PrizeModel CreatePrize(PrizeModel prize)
+        public PrizeModel SavePrize(PrizeModel prize)
         {
             using (var connection =
                 new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
@@ -59,7 +59,7 @@ namespace TournamentTracker.Connectors
             }
         }
 
-        public TeamModel CreateTeam(TeamModel team)
+        public TeamModel SaveTeam(TeamModel team)
         {
             using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
             {
@@ -86,7 +86,7 @@ namespace TournamentTracker.Connectors
             }
         }
 
-        public TournamentModel CreateTournament(TournamentModel tournament)
+        public TournamentModel SaveTournament(TournamentModel tournament)
         {
             using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
             {
