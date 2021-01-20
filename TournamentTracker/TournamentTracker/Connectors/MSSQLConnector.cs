@@ -165,6 +165,7 @@ namespace TournamentTracker.Connectors
             }
         }
         
+        // TODO: Add participants to teams
         public List<TeamModel> GetTeams()
         {
             using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
@@ -217,6 +218,66 @@ namespace TournamentTracker.Connectors
 
             tournament.Id = p.Get<int>("@id");
             return tournament;
+        }
+
+        public List<TournamentModel> GetTournaments()
+        {
+            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            {
+                var output = connection.Query<TournamentModel>("dbo.spTournaments_GetAll").ToList();
+
+                foreach (var t in output)
+                {
+                    var p = new DynamicParameters();
+
+                    p.Add("@TournamentId", t.Id);
+
+                    t.EnteredTeams = connection.Query<TeamModel>("spTeams_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+                    
+                    foreach (var tm in t.EnteredTeams)
+                    {
+                        p = new DynamicParameters();
+
+                        p.Add("@TeamId", tm.Id);
+
+                        tm.TeamMembers = connection.Query<PersonModel>("spTeamMembers_GetByTeam", p, commandType: CommandType.StoredProcedure).ToList();
+                    }
+
+                    p = new DynamicParameters();
+
+                    p.Add("@TournamentId", t.Id);
+
+                    t.Prizes = connection.Query<PrizeModel>("spPrizes_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+
+                    var matches = connection.Query<MatchModel>("spMatch_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+                    if (matches.Count > 0)
+                    {
+                        var rounds = matches.OrderByDescending(x => x.RoundNumber).First().RoundNumber;
+
+                        for (int i = 1; i <= rounds; i++)
+                        {
+                            t.Rounds.Add(matches.Where(x => x.RoundNumber == i).ToList());
+                        }
+
+                        foreach (var r in t.Rounds)
+                        {
+                            foreach (var m in r)
+                            {
+                                p = new DynamicParameters();
+
+                                p.Add("@MatchId", m.Id);
+                                p.Add("@CompetitingTeamId", 0, DbType.Int32, ParameterDirection.Output);
+
+                                // TODO: Create a stored procedure for receiving team by id. And init competing team with a received team. 
+
+                                m.Entries = connection.Query<MatchEntryModel>("spMatchEntries_GetByMatch", p, commandType: CommandType.StoredProcedure).ToList();
+                            }
+                        }
+                    }
+                }
+
+                return output;
+            }
         }
     }
 }

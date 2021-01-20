@@ -183,6 +183,14 @@ namespace TournamentTracker.Connectors
                 .ToTeamModels();
         }
 
+        public List<TournamentModel> GetTournaments()
+        {
+            return GlobalConfiguration.TournamentsFileName
+                .GetFilePath()
+                .LoadFile()
+                .ToTournamentModels();
+        }
+
         #endregion
     }
 }

@@ -53,5 +53,11 @@ namespace TournamentTracker.Interfaces
         /// </summary>
         /// <returns> The collection of <see cref="PrizeModel"/>. </returns>
         List<PrizeModel> GetPrizes();
+
+        /// <summary>
+        /// Allows to get all tournaments from the data storage.
+        /// </summary>
+        /// <returns></returns>
+        List<TournamentModel> GetTournaments();
     }
 }
