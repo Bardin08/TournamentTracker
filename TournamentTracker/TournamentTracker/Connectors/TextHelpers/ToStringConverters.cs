@@ -58,10 +58,18 @@ namespace TournamentTracker.Connectors.TextHelpers
                 t.Prizes.PrizesToLines().SaveToFile(GlobalConfiguration.PrizesFileName);
 
                 var teamsIds = "";
-                t.EnteredTeams.ForEach(team => teamsIds += $"{team.Id}|");
+                foreach (var team in t.EnteredTeams)
+                { 
+                    teamsIds += $"{team.Id}|";
+                }
 
                 var prizesIds = "";
                 t.Prizes.ForEach(prize => prizesIds += $"{prize.Id}|");
+
+                foreach (var prize in t.Prizes)
+                { 
+                    prizesIds += $"{prize.Id}|";
+                }
 
                 lines.Add($"{t.Id},{t.TournamentName},{t.EntryFee},{teamsIds.TrimEnd('|')},{prizesIds.TrimEnd('|')},{t.Rounds.RoundsToString()}");
             }
