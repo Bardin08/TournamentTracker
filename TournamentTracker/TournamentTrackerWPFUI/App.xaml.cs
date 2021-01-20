@@ -12,7 +12,7 @@ namespace TournamentTrackerWPFUI
         {
             base.OnStartup(e);
 
-            TournamentTracker.GlobalConfiguration.InitConnections(new CSVConnector());
+            TournamentTracker.GlobalConfiguration.InitConnections(new MSSQLConnector());
         }
     }
 }
