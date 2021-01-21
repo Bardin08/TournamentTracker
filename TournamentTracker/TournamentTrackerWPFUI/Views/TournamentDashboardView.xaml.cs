@@ -36,5 +36,10 @@ namespace TournamentTrackerWPFUI.Views
         {
             _viewModel.SelectedTournament = tournament;    
         }
+
+        private void TeamSplitButton_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            _viewModel.SelectedTournament = TeamSplitButton.SelectedItem as TournamentModel;
+        }
     }
 }

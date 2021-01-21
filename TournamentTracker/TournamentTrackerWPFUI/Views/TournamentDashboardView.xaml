@@ -42,6 +42,7 @@
 
             <ComboBox x:Name="TeamSplitButton"
                       Width="350"
+                      SelectionChanged="TeamSplitButton_SelectionChanged"
                       ItemsSource="{Binding Path=Tournaments}"
                       Margin="5 0 5 5">
                 <ComboBox.ItemTemplate>
