@@ -4,15 +4,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TournamentTrackerWPFUI.Views"
         mc:Ignorable="d"
-        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-            Title="Tournament"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" 
+    Title="Tournament"
             Height="450"
             Width="600"
             GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
             WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Grid>      
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10*"/>
@@ -56,15 +55,17 @@
                                FontStyle="Normal"
                                FontFamily="Cambria"
                                FontWeight="SemiBold"/>
-                        <Controls:SplitButton Name="RoundSplitButton" 
-                                          SelectionChanged="RoundSplitButton_SelectionChanged"      
-                                          SelectedIndex="0"
-                                          Margin="10 5 0 5"
-                                          HorizontalAlignment="Center"
-                                          Width="{Binding ActualWidth, ElementName=textBlock, Mode=OneWay}"/>
+                        <ComboBox Name="RoundSplitButton" 
+                                  SelectionChanged="RoundSplitButton_SelectionChanged"      
+                                  ItemsSource="{Binding Rounds}"
+                                  SelectedIndex="0"
+                                  Margin="10 5 0 5"
+                                  HorizontalAlignment="Center"
+                                  Width="{Binding ActualWidth, ElementName=textBlock, Mode=OneWay}"/>
                     </StackPanel>
 
                     <CheckBox Name="OnlyUnplayedMatchesCheckBox"
+                          Unchecked="OnlyUnplayedMatchesCheckBox_Checked"
                           Checked="OnlyUnplayedMatchesCheckBox_Checked"
                           Content="Only Unplayed"
                           Margin="5 0 5 5"
@@ -90,23 +91,39 @@
 
                         <ListBox x:Name="MatchesListBox"
                              Style="{StaticResource MahApps.Styles.ListBox}"
-                             ItemsSource="{Binding }"
+                             ItemsSource="{Binding Path=MatchesToShow}"
                              SelectionChanged="MatchesListBox_SelectionChanged"
                              ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                             Height="{Binding ActualHeight, ElementName=ListContainer, Mode=OneWay}">
+                             Height="256">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel 
                                     Margin="5" 
                                     Orientation="Horizontal" 
                                     HorizontalAlignment="Center">
-                                        <TextBlock x:Name="MatchTextBlock"
-                                                   Margin="5"
-                                                   Padding="3"
-                                                   FontSize="16px"
-                                                   FontStyle="Normal"
-                                                   FontFamily="Cambria"
-                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Entries[0].CompetingTeam.TeamName}"
+                                            Margin="5"
+                                            Padding="3"
+                                            FontSize="16px"
+                                            FontStyle="Normal"
+                                            FontFamily="Cambria"
+                                            FontWeight="SemiBold"/>
+
+                                         <TextBlock Text="VS"
+                                            Margin="5"
+                                            Padding="3"
+                                            FontSize="18px"
+                                            FontStyle="Normal"
+                                            FontFamily="Cambria"
+                                            FontWeight="ExtraBold"/>
+
+                                        <TextBlock Text="{Binding Entries[1].CompetingTeam.TeamName, Converter={StaticResource StringToVisibilityConverter}}"
+                                            Margin="5"
+                                            Padding="3"
+                                            FontSize="16px"
+                                            FontStyle="Normal"
+                                            FontFamily="Cambria"
+                                            FontWeight="SemiBold"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -120,12 +137,21 @@
                 <StackPanel Margin="5"
                             Orientation="Vertical"
                             VerticalAlignment="Center">
+
+                    <TextBlock Text="{Binding Path=Tournament.TournamentName}"
+                               Margin="5"
+                               Padding="3"
+                               FontSize="24px"
+                               FontStyle="Normal"
+                               FontFamily="Montserrat"
+                               FontWeight="SemiBold"/>
+                    
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 Margin="5 0 5 0">
 
                         <TextBlock Name="FirstTeamNameTextBlock"
-                               Text="Team 1: "
+                               Text="{Binding Team1.TeamName}"
                                Margin="5"
                                Padding="3"
                                FontSize="16px"
@@ -142,7 +168,7 @@
                                FontWeight="ExtraBold"/>
 
                         <TextBlock Name="SecondTeamNameTextBlock"
-                               Text="Team 2"
+                               Text="{Binding Team2.TeamName}"
                                Margin="5"
                                Padding="3"
                                FontSize="16px"
