@@ -7,8 +7,12 @@
         /// </summary>
         public int Id { get; set; }
         /// <summary>
+        /// Represents the unique identifier of a team in the match.
+        /// </summary
+        public int? TeamCompetingId { get; set; }
+        /// <summary>
         /// Represents one team in the match.
-        /// </summary>
+        /// </summary
         public TeamModel CompetingTeam { get; set; }
         /// <summary>
         /// Represents the score for this particular team.

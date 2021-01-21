@@ -220,6 +220,7 @@ namespace TournamentTracker.Connectors
             return tournament;
         }
 
+        // TODO: Refactoring requires
         public List<TournamentModel> GetTournaments()
         {
             using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
@@ -233,7 +234,7 @@ namespace TournamentTracker.Connectors
                     p.Add("@TournamentId", t.Id);
 
                     t.EnteredTeams = connection.Query<TeamModel>("spTeams_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
-                    
+
                     foreach (var tm in t.EnteredTeams)
                     {
                         p = new DynamicParameters();
@@ -266,16 +267,20 @@ namespace TournamentTracker.Connectors
                                 p = new DynamicParameters();
 
                                 p.Add("@MatchId", m.Id);
-                                p.Add("@CompetitingTeamId", 0, DbType.Int32, ParameterDirection.Output);
-
-                                // TODO: Create a stored procedure for receiving team by id. And init competing team with a received team. 
 
                                 m.Entries = connection.Query<MatchEntryModel>("spMatchEntries_GetByMatch", p, commandType: CommandType.StoredProcedure).ToList();
+
+                                foreach (var e in m.Entries)
+                                {
+                                    if (e.TeamCompetingId != null)
+                                    {
+                                        e.CompetingTeam = t.EnteredTeams.First(t => t.Id == e.TeamCompetingId);
+                                    }
+                                }
                             }
                         }
                     }
                 }
-
                 return output;
             }
         }
