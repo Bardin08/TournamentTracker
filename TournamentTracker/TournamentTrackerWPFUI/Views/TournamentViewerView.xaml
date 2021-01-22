@@ -1,221 +1,216 @@
-﻿<Controls:MetroWindow 
+﻿<mah:MetroWindow  
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         x:Class="TournamentTrackerWPFUI.Views.TournamentViewerView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:Converters="clr-namespace:TournamentTrackerWPFUI.Converters" 
+        xmlns:viewmodels="clr-namespace:TournamentTrackerWPFUI.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:TournamentViewerViewModel}"
         mc:Ignorable="d"
-        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" 
-    Title="Tournament"
-            Height="450"
-            Width="600"
-            GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
-            WindowStartupLocation="CenterScreen">
-    <Grid>      
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="10*"/>
-        </Grid.RowDefinitions>
+        Title="Tournament viewer"
+        Height="500"
+        Width="600"
+        GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" FontFamily="Montserrat">
+    <mah:MetroWindow.Resources>
+        <Converters:TeamNameToStringConverter x:Key="TeamNameConverter"/>
+    </mah:MetroWindow.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
 
-        <!-- First row -->
-        <TextBlock Text="Tournament viewer" 
-                   Margin="5" 
-                   Padding="3" 
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="20px"
-                   FontFamily="Cambria"
-                   FontStyle="Normal"
-                   FontWeight="SemiBold"/>
+            <!-- First Row -->
 
-        <!-- Second row -->
+            <TextBlock Text="{Binding Tournament.TournamentName}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Margin="5"
+                    FontSize="16px"
+                    FontFamily="Montserrat-Medium"/>
 
-        <!-- First column -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
+            <!-- Second Row -->
 
-            <!-- First column -->
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="10*"/>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0"
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- First Column -->
+
+                <Border Grid.Column="0"
+                            BorderBrush="Gainsboro"
+                            BorderThickness="0.5px"
+                            CornerRadius="10"
+                            Margin="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Margin="5"
+                                    Width="280">
+                            <TextBlock Text="Round: "
+                                        VerticalAlignment="Center"/>
+                            <ComboBox x:Name="RoundComboBox"
+                                        ItemsSource="{Binding Rounds}"
+                                        SelectedIndex ="0"
+                                        Width="100"
+                                        Height="8" 
+                                        FontFamily="Montserrat"
+                                        SelectionChanged="RoundComboBox_SelectionChanged">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding }"
+                                            Width="100"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="5,0,9,0">
+                            <CheckBox Name="ShowOnlyUnplayedCheckBox"
+                                IsChecked="False"
+                                VerticalAlignment="Center"
+                                FontFamily="Montserrat"
+                                Content="Show only unplayed matches"
+                                Checked="ShowOnlyUnplayedCheckBox_Checked"
+                                Unchecked="ShowOnlyUnplayedCheckBox_Unchecked"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Margin="5"
+                                    Width="280">
+                            <TextBlock Text="Matches: "
+                                        FontSize="14px"
+                                        VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Border Grid.Row="3"
+                                        BorderBrush="Gainsboro"
+                                        BorderThickness="0.5px"
+                                        CornerRadius="10"
+                                        Margin="5"
+                                        HorizontalAlignment="Center"
+                                        Width="215">
+                            <ListBox Name="MatchesListBox"
+                                        ItemsSource="{Binding Path=MatchesToShow}"
+                                        SelectedIndex="0"
+                                        Width="210"
+                                        Height="210"
+                                        HorizontalAlignment="Center"
+                                        SelectionChanged="MatchesListBox_SelectionChanged"
+                                        Style="{StaticResource MahApps.Styles.ListBox.Virtualized}" Margin="0,24,0,24">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="5"
+                                                    Width="195"
+                                                    Height="20">
+                                            <TextBlock Text="{Binding Path=Entries[0].CompetingTeam.TeamName, Converter={StaticResource TeamNameConverter}}"
+                                                        VerticalAlignment="Center"/>
+                                            <TextBlock Text=" —— "
+                                                        VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Path=Entries[1].CompetingTeam.TeamName, Converter={StaticResource TeamNameConverter}}"
+                                                        VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Second Column -->
+
+                <Border Grid.Column="1"
+                    BorderBrush="Gainsboro"
+                    BorderThickness="0.5px"
+                    CornerRadius="10"
+                    Margin="0,5,5,5">
+                    <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
                         Margin="5"
-                        Orientation="Vertical">
-                    <StackPanel Margin="5"
-                            Orientation="Horizontal">
-                        <TextBlock x:Name="textBlock" Text="Round: "
-                               Margin="5"
-                               Padding="3"
-                               FontSize="16px"
-                               FontStyle="Normal"
-                               FontFamily="Cambria"
-                               FontWeight="SemiBold"/>
-                        <ComboBox Name="RoundSplitButton" 
-                                  SelectionChanged="RoundSplitButton_SelectionChanged"      
-                                  ItemsSource="{Binding Rounds}"
-                                  SelectedIndex="0"
-                                  Margin="10 5 0 5"
-                                  HorizontalAlignment="Center"
-                                  Width="{Binding ActualWidth, ElementName=textBlock, Mode=OneWay}"/>
-                    </StackPanel>
+                        Width="260"
+                        DataContext="{Binding SelectedMatch}">
+                        <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            Margin="5"
+                            Width="250">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                    <CheckBox Name="OnlyUnplayedMatchesCheckBox"
-                          Unchecked="OnlyUnplayedMatchesCheckBox_Checked"
-                          Checked="OnlyUnplayedMatchesCheckBox_Checked"
-                          Content="Only Unplayed"
-                          Margin="5 0 5 5"
-                          Padding="3"
-                          FontSize="16px"
-                          FontStyle="Normal"
-                          FontFamily="Cambria"
-                          FontWeight="SemiBold"
-                          HorizontalAlignment="Center"/>
-                </StackPanel>
+                                <TextBlock Grid.Column="0"
+                                    Width="120"
+                                    Text="{Binding Entries[0].CompetingTeam.TeamName, Mode=TwoWay, Converter={StaticResource TeamNameConverter}}"/>
 
-                <Grid Grid.Row="1"
-                      Name="ListContainer">
-                    <StackPanel Margin="5"
-                                Orientation="Vertical">
-                        <TextBlock Text="Matches: "
-                               Margin="5"
-                               Padding="3"
-                               FontSize="16px"
-                               FontStyle="Normal"
-                               FontFamily="Cambria"
-                               FontWeight="SemiBold"/>
-
-                        <ListBox x:Name="MatchesListBox"
-                             Style="{StaticResource MahApps.Styles.ListBox}"
-                             ItemsSource="{Binding Path=MatchesToShow}"
-                             SelectionChanged="MatchesListBox_SelectionChanged"
-                             ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                             Height="256">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel 
-                                    Margin="5" 
-                                    Orientation="Horizontal" 
-                                    HorizontalAlignment="Center">
-                                        <TextBlock Text="{Binding Entries[0].CompetingTeam.TeamName}"
+                                <TextBox Grid.Column="1"
+                                    Name="FirstTeamScoreTextBox"
+                                    Text="{Binding Entries[0].Score}"
+                                    Width="50"
+                                    FontFamily="Montserrat"/>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Left"
                                             Margin="5"
-                                            Padding="3"
-                                            FontSize="16px"
-                                            FontStyle="Normal"
-                                            FontFamily="Cambria"
-                                            FontWeight="SemiBold"/>
+                                            Width="250">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                                         <TextBlock Text="VS"
-                                            Margin="5"
-                                            Padding="3"
-                                            FontSize="18px"
-                                            FontStyle="Normal"
-                                            FontFamily="Cambria"
-                                            FontWeight="ExtraBold"/>
+                                <TextBlock Grid.Column="0"
+                                    Width="120"
+                                    Text="{Binding Entries[1].CompetingTeam.TeamName, Converter={StaticResource TeamNameConverter}}"/>
 
-                                        <TextBlock Text="{Binding Entries[1].CompetingTeam.TeamName, Converter={StaticResource StringToVisibilityConverter}}"
-                                            Margin="5"
-                                            Padding="3"
-                                            FontSize="16px"
-                                            FontStyle="Normal"
-                                            FontFamily="Cambria"
-                                            FontWeight="SemiBold"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                                <TextBox Grid.Column="1"
+                                    Name="SecondTeamScoreTextBox"
+                                    Text="{Binding Entries[1].Score}"
+                                    Width="50"
+                                    FontFamily="Montserrat"/>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            Margin="5"
+                            Width="250">
+                            <Grid>
+                                <Button x:Name="SubmitScoreButton"
+                                    Content="Score!"
+                                    Width="250"
+                                    FontFamily="Montserrat"
+                                    Click="SubmitScoreButton_Click"/>
+                            </Grid>
+                        </StackPanel>
                     </StackPanel>
-                </Grid>
-            </Grid>
-
-            <!-- Second column -->
-            <Grid Grid.Row="1" Grid.Column="1">
-                <StackPanel Margin="5"
-                            Orientation="Vertical"
-                            VerticalAlignment="Center">
-
-                    <TextBlock Text="{Binding Path=Tournament.TournamentName}"
-                               Margin="5"
-                               Padding="3"
-                               FontSize="24px"
-                               FontStyle="Normal"
-                               FontFamily="Montserrat"
-                               FontWeight="SemiBold"/>
-                    
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center"
-                                Margin="5 0 5 0">
-
-                        <TextBlock Name="FirstTeamNameTextBlock"
-                               Text="{Binding Team1.TeamName}"
-                               Margin="5"
-                               Padding="3"
-                               FontSize="16px"
-                               FontStyle="Normal"
-                               FontFamily="Cambria"
-                               FontWeight="SemiBold"/>
-
-                        <TextBlock Text="VS"
-                               Margin="5"
-                               Padding="3"
-                               FontSize="18px"
-                               FontStyle="Normal"
-                               FontFamily="Cambria"
-                               FontWeight="ExtraBold"/>
-
-                        <TextBlock Name="SecondTeamNameTextBlock"
-                               Text="{Binding Team2.TeamName}"
-                               Margin="5"
-                               Padding="3"
-                               FontSize="16px"
-                               FontStyle="Normal"
-                               FontFamily="Cambria"
-                               FontWeight="SemiBold"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center"
-                                Margin="5 0 5 0">
-
-                        <TextBox Name="FirstTeamScoreTextBox"
-                                 Width="50"
-                                 Margin="5 5 30 5"
-                                 Padding="3"
-                                 FontSize="16px"
-                                 FontStyle="Normal"
-                                 FontFamily="Cambria"
-                                 FontWeight="SemiBold"/>
-
-
-                        <TextBox Name="SecondTeamScoreTextBox"
-                                 Width="50"
-                                 Margin="35 5 5 5"
-                                 Padding="3"
-                                 FontSize="16px"
-                                 FontStyle="Normal"
-                                 FontFamily="Cambria"
-                                 FontWeight="SemiBold"/>
-
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center"
-                                Margin="5">
-                        <Button x:Name="SubmitScoreButton"
-                                Content="Submit" 
-                                Width="100"
-                                Padding="3"
-                                FontSize="16px"
-                                FontStyle="Normal"
-                                FontFamily="Cambria"
-                                FontWeight="SemiBold" Click="SubmitScoreButton_Click"/>
-                    </StackPanel>
-                </StackPanel>
+                </Border>
             </Grid>
         </Grid>
     </Grid>
-</Controls:MetroWindow>
+</mah:MetroWindow>
