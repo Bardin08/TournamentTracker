@@ -1,14 +1,15 @@
 ﻿using TournamentTracker.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {
-    public class TournamentDashboardViewModel : INotifyCollectionChanged
+    public class TournamentDashboardViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<TournamentModel> _tournaments;
 
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<TournamentModel> Tournaments
         {
@@ -16,7 +17,7 @@ namespace TournamentTrackerWPFUI.ViewModels
             set 
             {
                 _tournaments = value;
-                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Tournaments)));
             }
         }
 

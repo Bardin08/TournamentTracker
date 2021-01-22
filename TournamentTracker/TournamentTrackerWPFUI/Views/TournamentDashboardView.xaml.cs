@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using MahApps.Metro.Controls;
+using TournamentTracker;
 using TournamentTracker.Models;
 using TournamentTrackerWPFUI.Interfaces;
 using TournamentTrackerWPFUI.ViewModels;
@@ -26,10 +28,14 @@ namespace TournamentTrackerWPFUI.Views
             Close();
         }
 
-        private void CreateTournamentButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateTournamentButton_Click(object sender, RoutedEventArgs e)
         {
             new CreateTournament(this).Show();
-            Close();
+
+
+            // TODO: Check this
+            _viewModel.Tournaments = new System.Collections.ObjectModel.ObservableCollection<TournamentModel>
+                (await Task.Run(() => GlobalConfiguration.Connection.GetTournaments()));
         }
 
         public void TournamentCreated(TournamentModel tournament)
