@@ -9,6 +9,10 @@ namespace TournamentTracker.Models
         /// </summary>
         public int Id { get; set; }
         /// <summary>
+        /// Represents the winner unique identifier.
+        /// </summary>
+        public int WinnerId { get; set; }
+        /// <summary>
         /// Represents match teams with some additional information. Check also a <seealso cref="Models.MatchEntryModel"/>.
         /// </summary>
         public List<MatchEntryModel> Entries { get; set; } = new List<MatchEntryModel>();
