@@ -8,7 +8,12 @@ namespace TournamentTrackerWPFUI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value ?? "Bye";
+            if ((string)value == null)
+            {
+                return "No info";
+            }
+
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
