@@ -3,12 +3,14 @@ using TournamentTracker.Models;
 using System.Collections.Generic;
 using TournamentTracker.Interfaces;
 using TournamentTracker.Connectors.TextHelpers;
+using System;
 
 namespace TournamentTracker.Connectors
 {
     /// <summary>
     /// Connector for CSV file. Allows saving data to CSV files.
     /// </summary>
+    [Obsolete]
     public class CSVConnector : IDataConnection
     {
         #region Save data to the data storage
@@ -189,6 +191,12 @@ namespace TournamentTracker.Connectors
                 .GetFilePath()
                 .LoadFile()
                 .ToTournamentModels();
+        }
+
+        // TODO: Add match update support
+        public MatchModel UpdateMatch(MatchModel match)
+        {
+            throw new NotSupportedException();
         }
 
         #endregion

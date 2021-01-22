@@ -37,6 +37,13 @@ namespace TournamentTracker.Interfaces
         TournamentModel SaveTournament(TournamentModel tournament);
 
         /// <summary>
+        /// Allows to update match model.
+        /// </summary>
+        /// <param name="match"> Match which should be updated </param>
+        /// <returns></returns>
+        MatchModel UpdateMatch(MatchModel match);
+
+        /// <summary>
         /// Allows to get all participants data from the data storage.
         /// </summary>
         /// <returns> The collection of <seealso cref="PersonModel"/>. </returns>

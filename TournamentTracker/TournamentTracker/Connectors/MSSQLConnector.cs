@@ -105,7 +105,7 @@ namespace TournamentTracker.Connectors
                 {
                     var p = new DynamicParameters();
 
-                    p.Add("@MatchRound", match.RoundNumber);
+                    p.Add("@RoundNumber", match.RoundNumber);
                     p.Add("@TournamentId", tournament.Id);
                     p.Add("@id", 0, DbType.Int32, ParameterDirection.Output);
 
@@ -253,7 +253,7 @@ namespace TournamentTracker.Connectors
                     var matches = connection.Query<MatchModel>("spMatch_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
                     if (matches.Count > 0)
                     {
-                        var rounds = matches.OrderByDescending(x => x.RoundNumber).First().RoundNumber;
+                        int rounds = matches.OrderByDescending(x => x.RoundNumber).First().RoundNumber;
 
                         for (int i = 1; i <= rounds; i++)
                         {
@@ -270,6 +270,8 @@ namespace TournamentTracker.Connectors
 
                                 m.Entries = connection.Query<MatchEntryModel>("spMatchEntries_GetByMatch", p, commandType: CommandType.StoredProcedure).ToList();
 
+                                m.Winner = t.EnteredTeams.FirstOrDefault(team => team.Id == m.WinnerId);
+
                                 foreach (var e in m.Entries)
                                 {
                                     if (e.TeamCompetingId != null)
@@ -283,6 +285,32 @@ namespace TournamentTracker.Connectors
                 }
                 return output;
             }
+        }
+
+        public MatchModel UpdateMatch(MatchModel match)
+        {
+            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            {
+                var p = new DynamicParameters();
+
+                p.Add("@MatchId", match.Id);
+                p.Add("@WinnerId", match.Winner.Id);
+
+                connection.Execute("dbo.spMatches_Update", p, commandType: CommandType.StoredProcedure);
+
+                foreach (var me in match.Entries)
+                {
+                    p = new DynamicParameters();
+
+                    p.Add("@MatchEntryId", me.Id);
+                    p.Add("@TeamCompetingId", me.TeamCompetingId);
+                    p.Add("@Score", me.Score);
+
+                    connection.Execute("dbo.spMatchEntries_Update", p, commandType: CommandType.StoredProcedure);
+                }
+            }
+
+            return match;
         }
     }
 }
