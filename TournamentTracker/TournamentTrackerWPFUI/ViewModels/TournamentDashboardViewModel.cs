@@ -25,7 +25,6 @@ namespace TournamentTrackerWPFUI.ViewModels
 
         public TournamentDashboardViewModel()
         {
-            // TODO: Realize tournament loading
             Tournaments =
                 new ObservableCollection<TournamentModel>(TournamentTracker.GlobalConfiguration.Connection.GetTournaments());
 
