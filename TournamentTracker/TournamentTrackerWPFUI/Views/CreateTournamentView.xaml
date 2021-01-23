@@ -168,11 +168,7 @@
                                                 HorizontalAlignment="Left">
                                                 <TextBlock Text="{Binding TeamName}"
                                                     Margin="5"
-                                                    Padding="3"
-                                                    FontSize="16px"
-                                                    FontStyle="Normal"
-                                                    FontFamily="Cambria"
-                                                    FontWeight="SemiBold"/>
+                                                    Padding="3"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
