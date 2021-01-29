@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentTracker", "TournamentTracker\TournamentTracker.csproj", "{0083521F-E780-48FB-A500-5DD78EE38FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentTrackerWPFUI", "TournamentTrackerWPFUI\TournamentTrackerWPFUI.csproj", "{14F2441C-196B-4C93-97C9-70E1332B1F42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentTrackerWPFUI", "TournamentTrackerWPFUI\TournamentTrackerWPFUI.csproj", "{14F2441C-196B-4C93-97C9-70E1332B1F42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentTracker.Data", "TournamentTracker.Data\TournamentTracker.Data.csproj", "{F74A5806-D3C5-4B14-9800-C3A66B425206}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{14F2441C-196B-4C93-97C9-70E1332B1F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14F2441C-196B-4C93-97C9-70E1332B1F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14F2441C-196B-4C93-97C9-70E1332B1F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F74A5806-D3C5-4B14-9800-C3A66B425206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F74A5806-D3C5-4B14-9800-C3A66B425206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F74A5806-D3C5-4B14-9800-C3A66B425206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F74A5806-D3C5-4B14-9800-C3A66B425206}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
