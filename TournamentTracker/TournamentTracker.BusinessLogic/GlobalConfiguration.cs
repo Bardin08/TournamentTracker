@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TournamentTracker.Interfaces;
+using TournamentTracker.BusinessLogic.Interfaces;
 using TournamentTracker.Data.Interfaces;
 
-namespace TournamentTracker
+namespace TournamentTracker.BusinessLogic
 {
     /// <summary>
     /// Global configuration class. Gives access to global variables and objects. 

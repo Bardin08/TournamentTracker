@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace TournamentTracker.Interfaces
+namespace TournamentTracker.BusinessLogic.Interfaces
 {
     public interface INotificationSource
     {

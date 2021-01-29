@@ -1,4 +1,4 @@
-﻿namespace TournamentTracker.Notifiers.Options
+﻿namespace TournamentTracker.BusinessLogic.Notifiers.Options
 {
     public class TelegramNotifierOptions
     {

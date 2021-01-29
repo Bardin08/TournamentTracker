@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 using TournamentTracker.Domain.Models;
 
-namespace TournamentTracker.Logic
+namespace TournamentTracker.BusinessLogic.Logic
 {
     public static class TournamentLogic
     {

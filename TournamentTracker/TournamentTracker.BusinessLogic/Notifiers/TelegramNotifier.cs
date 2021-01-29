@@ -2,11 +2,10 @@
 
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
+using TournamentTracker.BusinessLogic.Interfaces;
+using TournamentTracker.BusinessLogic.Notifiers.Options;
 
-using TournamentTracker.Interfaces;
-using TournamentTracker.Notifiers.Options;
-
-namespace TournamentTracker.Notifiers
+namespace TournamentTracker.BusinessLogic.Notifiers
 {
     public class TelegramNotifier : INotificationSource
     {
