@@ -4,8 +4,9 @@ using System.Data.SqlClient;
 using System.Linq;
 
 using Dapper;
-
+using TournamentTracker.Data.DTOs;
 using TournamentTracker.Data.Interfaces;
+using TournamentTracker.Data.Mappings;
 using TournamentTracker.Domain.Models;
 
 namespace TournamentTracker.Data.Connectors
@@ -222,12 +223,11 @@ namespace TournamentTracker.Data.Connectors
             return tournament;
         }
 
-        // TODO: Refactoring requires
         public List<TournamentModel> GetTournaments()
         {
             using (var connection = new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
-                var output = connection.Query<TournamentModel>("dbo.spTournaments_GetAll").ToList();
+                var output = connection.Query<TournamentDto>("dbo.spTournaments_GetAll").ToList();
 
                 foreach (var t in output)
                 {
@@ -235,24 +235,22 @@ namespace TournamentTracker.Data.Connectors
 
                     p.Add("@TournamentId", t.Id);
 
-                    t.EnteredTeams = connection.Query<TeamModel>("spTeams_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+                    t.EnteredTeams = connection.Query<TeamDto>("spTeams_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
 
                     foreach (var tm in t.EnteredTeams)
                     {
                         p = new DynamicParameters();
 
                         p.Add("@TeamId", tm.Id);
-
-                        tm.TeamMembers = connection.Query<PersonModel>("spTeamMembers_GetByTeam", p, commandType: CommandType.StoredProcedure).ToList();
                     }
 
                     p = new DynamicParameters();
 
                     p.Add("@TournamentId", t.Id);
 
-                    t.Prizes = connection.Query<PrizeModel>("spPrizes_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+                    t.Prizes = connection.Query<PrizeDto>("spPrizes_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
 
-                    var matches = connection.Query<MatchModel>("spMatch_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+                    var matches = connection.Query<MatchDto>("spMatch_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
                     if (matches.Count > 0)
                     {
                         int rounds = matches.OrderByDescending(x => x.RoundNumber).First().RoundNumber;
@@ -270,22 +268,12 @@ namespace TournamentTracker.Data.Connectors
 
                                 p.Add("@MatchId", m.Id);
 
-                                m.Entries = connection.Query<MatchEntryModel>("spMatchEntries_GetByMatch", p, commandType: CommandType.StoredProcedure).ToList();
-
-                                m.Winner = t.EnteredTeams.FirstOrDefault(team => team.Id == m.WinnerId);
-
-                                foreach (var e in m.Entries)
-                                {
-                                    if (e.TeamCompetingId != null)
-                                    {
-                                        e.CompetingTeam = t.EnteredTeams.First(t => t.Id == e.TeamCompetingId);
-                                    }
-                                }
+                                m.Entries = connection.Query<MatchEntryDto>("spMatchEntries_GetByMatch", p, commandType: CommandType.StoredProcedure).ToList();
                             }
                         }
                     }
                 }
-                return output;
+                return TournamentDtoToModel.Map(output).ToList();
             }
         }
 
@@ -305,7 +293,7 @@ namespace TournamentTracker.Data.Connectors
                     p = new DynamicParameters();
 
                     p.Add("@MatchEntryId", me.Id);
-                    p.Add("@TeamCompetingId", me.TeamCompetingId);
+                    p.Add("@TeamCompetingId", me.CompetingTeam.Id);
                     p.Add("@Score", me.Score);
 
                     connection.Execute("dbo.spMatchEntries_Update", p, commandType: CommandType.StoredProcedure);

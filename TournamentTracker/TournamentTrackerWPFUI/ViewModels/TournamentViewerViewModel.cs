@@ -142,9 +142,9 @@ namespace TournamentTrackerWPFUI.ViewModels
                 MoveTeamToNextRound(SelectedMatch);
             }
 
-            TournamentTracker.GlobalConfiguration.Connection.UpdateMatch(SelectedMatch);
+            TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.UpdateMatch(SelectedMatch);
 
-            TournamentTracker.Logic.TournamentLogic.Notify(Tournament, SelectedMatch);
+            TournamentTracker.BusinessLogic.Logic.TournamentLogic.Notify(Tournament, SelectedMatch);
 
             UnplayedMatchesForCurrentRound.Remove(SelectedMatch);
             PropertyChanged(this, new PropertyChangedEventArgs(nameof(UnplayedMatchesForCurrentRound)));
@@ -152,9 +152,16 @@ namespace TournamentTrackerWPFUI.ViewModels
 
         private void UpdateMatches()
         {
-            MatchesForCurrentRound = 
-                new ObservableCollection<MatchModel>(Tournament.Rounds[CurrentRound - 1]);
-
+            if (CurrentRound >= 1)
+            {
+                MatchesForCurrentRound =
+                    new ObservableCollection<MatchModel>(Tournament.Rounds[CurrentRound - 1]);
+            }
+            else
+            {
+                MatchesForCurrentRound = new ObservableCollection<MatchModel>();
+            }
+            
             UnplayedMatchesForCurrentRound =
                 new ObservableCollection<MatchModel>(MatchesForCurrentRound.Where(m => m.Winner == null));
 
@@ -207,9 +214,7 @@ namespace TournamentTrackerWPFUI.ViewModels
                     MoveTeamToNextRound(match);
                 }
 
-                TournamentTracker.GlobalConfiguration.Connection.UpdateMatch(match);
-
-                TournamentTracker.Logic.TournamentLogic.Notify(Tournament, match);
+                TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.UpdateMatch(match);
             }
         }
 
@@ -224,7 +229,6 @@ namespace TournamentTrackerWPFUI.ViewModels
                 {
                     r.ParentMatch = match;
                     r.CompetingTeam = match.Winner;
-                    r.TeamCompetingId = match.Winner.Id;
 
                     break;
                 }
