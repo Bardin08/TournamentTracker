@@ -1,4 +1,7 @@
-﻿using TournamentTracker.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+
+using TournamentTracker.Interfaces;
 
 namespace TournamentTracker
 {
@@ -24,17 +27,27 @@ namespace TournamentTracker
         public static IDataConnection Connection { get; private set; }
 
         /// <summary>
+        /// Sources where notifications should be sent.
+        /// </summary>
+        public static List<INotificationSource> NotificationSources { get; private set; } = new List<INotificationSource>();
+
+        /// <summary>
         /// Initiate connector. Allows changing data storage. 
         /// </summary>
         /// <param name="connection"> A data storage connector. </param>
         public static void InitConnections(IDataConnection connection)
         {
-            if (connection == null)
+            Connection = connection ?? throw new System.ArgumentException($"\"{nameof(connection)}\" can`t be null", nameof(connection));
+        }
+
+        public static void AddNotificationSource(INotificationSource notificationSource)
+        {
+            if (notificationSource == null)
             {
-                throw new System.ArgumentException($"\"{nameof(connection)}\" can`t be null", nameof(connection));
+                throw new ArgumentNullException(nameof(notificationSource));
             }
 
-            Connection = connection;
+            NotificationSources.Add(notificationSource);
         }
 
         /// <summary>
