@@ -1,13 +1,15 @@
-﻿using System.Windows;
-using MahApps.Metro.Controls;
-using TournamentTracker.Models;
+﻿using System.Linq;
+using System.Windows;
+using System.Threading.Tasks;
 using System.Collections.Generic;
+
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+
+using TournamentTracker.Models;
 using TournamentTrackerWPFUI.Helpers;
 using TournamentTrackerWPFUI.Interfaces;
 using TournamentTrackerWPFUI.ViewModels;
-using MahApps.Metro.Controls.Dialogs;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TournamentTrackerWPFUI.Views
 {

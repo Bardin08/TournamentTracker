@@ -1,9 +1,11 @@
-﻿using Dapper;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 using System.Data.SqlClient;
-using TournamentTracker.Models;
 using System.Collections.Generic;
+
+using Dapper;
+
+using TournamentTracker.Models;
 using TournamentTracker.Interfaces;
 
 namespace TournamentTracker.Connectors

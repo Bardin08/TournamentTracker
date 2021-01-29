@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using TournamentTracker.Models;
 
 namespace TournamentTracker.Interfaces

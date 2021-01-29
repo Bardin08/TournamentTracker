@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using System.Linq;
+
 using TournamentTracker;
 using TournamentTracker.Models;
 using TournamentTrackerWPFUI.ViewModels;

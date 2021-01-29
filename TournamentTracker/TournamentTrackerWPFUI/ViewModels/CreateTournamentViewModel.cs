@@ -1,8 +1,9 @@
 ﻿using System;
-using TournamentTracker.Models;
-using TournamentTracker.Interfaces;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+
+using TournamentTracker.Models;
+using TournamentTracker.Interfaces;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {

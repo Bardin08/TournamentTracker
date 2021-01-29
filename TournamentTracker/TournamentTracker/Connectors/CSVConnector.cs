@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using TournamentTracker.Models;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+
+using TournamentTracker.Models;
 using TournamentTracker.Interfaces;
 using TournamentTracker.Connectors.TextHelpers;
-using System;
 
 namespace TournamentTracker.Connectors
 {

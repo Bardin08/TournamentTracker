@@ -1,5 +1,6 @@
-﻿using TournamentTracker.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using TournamentTracker.Models;
 
 namespace TournamentTracker.Connectors.TextHelpers
 {

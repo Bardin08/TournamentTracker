@@ -3,11 +3,13 @@ using System.Linq;
 using System.Windows;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using MahApps.Metro.Controls;
-using TournamentTracker.Models;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+
+using TournamentTracker.Models;
 using TournamentTrackerWPFUI.Helpers;
 using TournamentTrackerWPFUI.Interfaces;
 using TournamentTrackerWPFUI.ViewModels;
