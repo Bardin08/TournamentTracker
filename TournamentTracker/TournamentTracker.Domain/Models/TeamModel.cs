@@ -8,10 +8,12 @@ namespace TournamentTracker.Domain.Models
         /// Represents team unique identifier.
         /// </summary>
         public int Id { get; set; }
+        
         /// <summary>
         /// Represents the team name.
         /// </summary>
         public string TeamName { get; set; }
+        
         /// <summary>
         /// Represents the team members.
         /// </summary>
