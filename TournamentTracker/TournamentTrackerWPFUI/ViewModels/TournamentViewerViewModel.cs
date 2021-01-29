@@ -147,8 +147,10 @@ namespace TournamentTrackerWPFUI.ViewModels
             { 
                 MoveTeamToNextRound(SelectedMatch);
             }
-            
+
             _dataSource.UpdateMatch(SelectedMatch);
+
+            TournamentTracker.Logic.TournamentLogic.Notify(Tournament, SelectedMatch);
 
             UnplayedMatchesForCurrentRound.Remove(SelectedMatch);
             PropertyChanged(this, new PropertyChangedEventArgs(nameof(UnplayedMatchesForCurrentRound)));
@@ -212,6 +214,8 @@ namespace TournamentTrackerWPFUI.ViewModels
                 }
 
                 _dataSource.UpdateMatch(match);
+
+                TournamentTracker.Logic.TournamentLogic.Notify(Tournament, match);
             }
         }
 
