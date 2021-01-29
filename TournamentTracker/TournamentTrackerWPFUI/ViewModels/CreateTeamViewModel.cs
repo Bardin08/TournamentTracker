@@ -43,7 +43,7 @@ namespace TournamentTrackerWPFUI.ViewModels
 
         public CreateTeamViewModel()
         {
-            var personModels = TournamentTracker.GlobalConfiguration.Connection.GetAllParticipants();
+            var personModels = TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.GetAllParticipants();
             AvailableMembers = new ObservableCollection<PersonModel>(personModels);
 
             SelectedMembers = new ObservableCollection<PersonModel>();

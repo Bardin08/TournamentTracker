@@ -26,7 +26,7 @@ namespace TournamentTrackerWPFUI.ViewModels
         public TournamentDashboardViewModel()
         {
             Tournaments =
-                new ObservableCollection<TournamentModel>(TournamentTracker.GlobalConfiguration.Connection.GetTournaments());
+                new ObservableCollection<TournamentModel>(TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.GetTournaments());
 
             SelectedTournament = Tournaments[0];
         }

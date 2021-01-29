@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+
 using TournamentTracker.Domain.Models;
 
 namespace TournamentTrackerWPFUI.ViewModels
@@ -59,8 +60,8 @@ namespace TournamentTrackerWPFUI.ViewModels
 
         public CreateTournamentViewModel()
         {
-            Teams = new ObservableCollection<TeamModel>(TournamentTracker.GlobalConfiguration.Connection.GetTeams());
-            Prizes = new ObservableCollection<PrizeModel>(TournamentTracker.GlobalConfiguration.Connection.GetPrizes());
+            Teams = new ObservableCollection<TeamModel>(TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.GetTeams());
+            Prizes = new ObservableCollection<PrizeModel>(TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.GetPrizes());
 
             SelectedTeams = new ObservableCollection<TeamModel>();
             SelectedPrizes = new ObservableCollection<PrizeModel>();

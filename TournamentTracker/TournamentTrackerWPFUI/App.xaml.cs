@@ -1,10 +1,10 @@
 ﻿using System.Configuration;
 using System.Windows;
 
-using TournamentTracker;
+using TournamentTracker.BusinessLogic;
 using TournamentTracker.Data.Connectors;
-using TournamentTracker.Notifiers;
-using TournamentTracker.Notifiers.Options;
+using TournamentTracker.BusinessLogic.Notifiers;
+using TournamentTracker.BusinessLogic.Notifiers.Options;
 
 namespace TournamentTrackerWPFUI
 {
@@ -18,7 +18,7 @@ namespace TournamentTrackerWPFUI
             base.OnStartup(e);
 
             // TODO: Add options and BL configuring from model
-            TournamentTracker.GlobalConfiguration.InitConnections(new MSSQLConnector());
+            GlobalConfiguration.InitConnections(new MSSQLConnector());
 
             var options = new TelegramNotifierOptions()
             {

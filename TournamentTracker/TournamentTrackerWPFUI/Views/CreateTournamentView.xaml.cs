@@ -41,9 +41,9 @@ namespace TournamentTrackerWPFUI.Views
             {
                 var tournament = CreateTournamentModel();
 
-                TournamentTracker.Logic.TournamentLogic.CreateRounds(tournament);
+                TournamentTracker.BusinessLogic.Logic.TournamentLogic.CreateRounds(tournament);
 
-                await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.SaveTournament(tournament));
+                await Task.Run(() => TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.SaveTournament(tournament));
                 _caller.TournamentCreated(tournament);
                 await this.ShowMessageAsync("", "Tournament successfully created");
 
