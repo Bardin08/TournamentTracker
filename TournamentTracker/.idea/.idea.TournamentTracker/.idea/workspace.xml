@@ -23,25 +23,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0d8bfc1-9333-4cfd-997b-bf93c8cfed08" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TournamentTracker.Data/DataConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker.Data/TournamentTracker.Data.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/TournamentTracker.Data.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TournamentTracker/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TournamentTracker/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TournamentTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TournamentTracker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTracker.Data/Connectors/MSSQLConnector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/Connectors/MSSQLConnector.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTracker.Data/DTOs/MatchDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/DTOs/MatchDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TournamentTracker.sln" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Connectors/CSVConnector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/Connectors/CSVConnector.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Connectors/MSSQLConnector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/Connectors/MSSQLConnector.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Connectors/TextHelpers/CSVFileProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/Connectors/TextHelpers/CSVFileProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Connectors/TextHelpers/DataLoaders.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/Connectors/TextHelpers/DataLoaders.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Connectors/TextHelpers/ToModelConverters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/Connectors/TextHelpers/ToModelConverters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Connectors/TextHelpers/ToStringConverters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/Connectors/TextHelpers/ToStringConverters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/GlobalConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker/GlobalConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Interfaces/IDataConnection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Data/Interfaces/IDataConnection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Logic/TournamentLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker/Logic/TournamentLogic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Models/MatchEntryModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Domain/Models/MatchEntryModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Models/MatchModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Domain/Models/MatchModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Models/PersonModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Domain/Models/PersonModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Models/PrizeModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Domain/Models/PrizeModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Models/TeamModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Domain/Models/TeamModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/Models/TournamentModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.Domain/Models/TournamentModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TournamentTracker/TournamentTracker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker/TournamentTracker.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTracker/GlobalConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.BusinessLogic/GlobalConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTracker/Interfaces/INotificationSource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.BusinessLogic/Interfaces/INotificationSource.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTracker/Logic/TournamentLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.BusinessLogic/Logic/TournamentLogic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTracker/Notifiers/Options/TelegramNotifierOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.BusinessLogic/Notifiers/Options/TelegramNotifierOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTracker/Notifiers/TelegramNotifier.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.BusinessLogic/Notifiers/TelegramNotifier.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTracker/TournamentTracker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTracker.BusinessLogic/TournamentTracker.BusinessLogic.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/App.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/Interfaces/IPrizeRequester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/Interfaces/IPrizeRequester.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/Interfaces/ITeamRequester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/Interfaces/ITeamRequester.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/Interfaces/ITournamentRequester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/Interfaces/ITournamentRequester.cs" afterDir="false" />
@@ -50,6 +43,11 @@
       <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/ViewModels/CreateTournamentViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/ViewModels/CreateTournamentViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/ViewModels/TournamentDashboardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/ViewModels/TournamentDashboardViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/ViewModels/TournamentViewerViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/ViewModels/TournamentViewerViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/CreatePrizeView.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/CreatePrizeView.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/CreateTeamView.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/CreateTeamView.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/CreateTournamentView.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/CreateTournamentView.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/TournamentDashboardView.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/TournamentDashboardView.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/TournamentViewerView.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TournamentTrackerWPFUI/Views/TournamentViewerView.xaml.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +59,8 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BC542A5C-3AD0-4C34-A080-02E941B52719/f2/a64c006f/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/TournamentTracker.BusinessLogic/Logic/TournamentLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/TournamentTracker.BusinessLogic/GlobalConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -82,6 +82,7 @@
         <option value="$PROJECT_DIR$/TournamentTracker.Data/DataConfiguration.cs" />
         <option value="$PROJECT_DIR$/TournamentTracker/GlobalConfiguration.cs" />
         <option value="$PROJECT_DIR$/TournamentTracker.Data/Connectors/MSSQLConnector.cs" />
+        <option value="$PROJECT_DIR$/TournamentTracker.BusinessLogic/GlobalConfiguration.cs" />
       </list>
     </option>
   </component>
@@ -126,13 +127,14 @@
       <option name="presentableId" value="Default" />
       <updated>1611910368914</updated>
       <workItem from="1611910391007" duration="1716000" />
+      <workItem from="1611944621012" duration="378000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -144,6 +146,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
@@ -153,6 +156,10 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="361" y="164" key="Rider.ProjectTemplateDialog.Size/0.0.1536.864@0.0.1536.864" timestamp="1611910884892" />
+    <state x="409" y="142" key="RollbackChangesDialog" timestamp="1611944902133">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="409" y="142" key="RollbackChangesDialog/0.0.1536.864@0.0.1536.864" timestamp="1611944902133" />
     <state x="72" y="122" width="1132" height="710" key="SettingsEditor" timestamp="1611912114078">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
