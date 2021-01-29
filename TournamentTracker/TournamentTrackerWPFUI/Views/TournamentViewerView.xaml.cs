@@ -47,10 +47,22 @@ namespace TournamentTrackerWPFUI.Views
         {
             if (ValidateScore())
             {
-                int firstTeamScore = int.Parse(FirstTeamScoreTextBox.Text);
-                int secondTeamScore = int.Parse(SecondTeamScoreTextBox.Text);
+                if (_viewModel.SelectedMatch.Winner == null)
+                {
+                    if (_viewModel.SelectedMatch.Entries.Count == 2 
+                        && _viewModel.SelectedMatch.Entries[0] != null 
+                        && _viewModel.SelectedMatch.Entries[1].CompetingTeam != null)
+                    {
+                        int firstTeamScore = int.Parse(FirstTeamScoreTextBox.Text);
+                        int secondTeamScore = int.Parse(SecondTeamScoreTextBox.Text);
 
-                _viewModel.WriteMatchResult(firstTeamScore, secondTeamScore);
+                        _viewModel.WriteMatchResult(firstTeamScore, secondTeamScore);
+                    }
+                }
+                else
+                {
+                    await this.ShowMessageAsync("", "This match is already scored.");
+                }    
             }
             else
             {
