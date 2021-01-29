@@ -3,7 +3,7 @@ using System.Windows;
 
 using MahApps.Metro.Controls;
 
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 using TournamentTrackerWPFUI.Interfaces;
 using TournamentTrackerWPFUI.ViewModels;
 

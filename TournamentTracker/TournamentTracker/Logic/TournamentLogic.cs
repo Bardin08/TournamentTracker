@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 
 namespace TournamentTracker.Logic
 {

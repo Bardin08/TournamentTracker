@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using TournamentTracker.Data.Connectors.TextHelpers;
+using TournamentTracker.Data.Interfaces;
+using TournamentTracker.Domain.Models;
 
-using TournamentTracker.Models;
-using TournamentTracker.Interfaces;
-using TournamentTracker.Connectors.TextHelpers;
-
-namespace TournamentTracker.Connectors
+namespace TournamentTracker.Data.Connectors
 {
     /// <summary>
     /// Connector for CSV file. Allows saving data to CSV files.
@@ -18,7 +17,7 @@ namespace TournamentTracker.Connectors
 
         public PersonModel SavePerson(PersonModel person)
         {
-            List<PersonModel> people = GlobalConfiguration.PeopleFileName
+            List<PersonModel> people = DataConfiguration.PeopleFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToPersonModels();
@@ -32,14 +31,14 @@ namespace TournamentTracker.Connectors
 
             people.Add(person);
             people.PeopleToLines()
-                .SaveToFile(GlobalConfiguration.PeopleFileName.GetFilePath());
+                .SaveToFile(DataConfiguration.PeopleFileName.GetFilePath());
 
             return person;
         }
 
         public PrizeModel SavePrize(PrizeModel prize)
         {
-            List<PrizeModel> prizes = GlobalConfiguration.PrizesFileName
+            List<PrizeModel> prizes = DataConfiguration.PrizesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToPrizeModels();
@@ -53,14 +52,14 @@ namespace TournamentTracker.Connectors
 
             prizes.Add(prize);
             prizes.PrizesToLines()
-                .SaveToFile(GlobalConfiguration.PrizesFileName.GetFilePath());
+                .SaveToFile(DataConfiguration.PrizesFileName.GetFilePath());
 
             return prize;
         }
 
         public TeamModel SaveTeam(TeamModel team)
         {
-            var teams = GlobalConfiguration.TeamsFileName
+            var teams = DataConfiguration.TeamsFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToTeamModels();
@@ -76,14 +75,14 @@ namespace TournamentTracker.Connectors
 
             teams.Add(team);
             teams.TeamsToLines()
-                .SaveToFile(GlobalConfiguration.TeamsFileName.GetFilePath());
+                .SaveToFile(DataConfiguration.TeamsFileName.GetFilePath());
 
             return team;
         }
 
         public TournamentModel SaveTournament(TournamentModel tournament)
         {
-            var tournaments = GlobalConfiguration.TournamentsFileName
+            var tournaments = DataConfiguration.TournamentsFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToTournamentModels();
@@ -99,7 +98,7 @@ namespace TournamentTracker.Connectors
 
             tournaments.Add(tournament);
             tournaments.TournamentToLines()
-                .SaveToFile(GlobalConfiguration.TournamentsFileName.GetFilePath());
+                .SaveToFile(DataConfiguration.TournamentsFileName.GetFilePath());
 
             return tournament;
         }
@@ -117,7 +116,7 @@ namespace TournamentTracker.Connectors
 
         private void SaveMatch(MatchModel match)
         {
-            List<MatchModel> matches = GlobalConfiguration.MatchesFileName
+            List<MatchModel> matches = DataConfiguration.MatchesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToMatchModels();
@@ -136,12 +135,12 @@ namespace TournamentTracker.Connectors
             }
 
             matches.MatchesToLines()
-                .SaveToFile(GlobalConfiguration.MatchesFileName.GetFilePath());
+                .SaveToFile(DataConfiguration.MatchesFileName.GetFilePath());
         }
 
         private void SaveMatchEntry(MatchEntryModel entry)
         {
-            List<MatchEntryModel> entries = GlobalConfiguration.MatchEntriesFileName
+            List<MatchEntryModel> entries = DataConfiguration.MatchEntriesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToMatchEntryModels();
@@ -155,7 +154,7 @@ namespace TournamentTracker.Connectors
             
             entries.Add(entry);
             entries.MatchEntriesToLines()
-                .SaveToFile(GlobalConfiguration.MatchEntriesFileName.GetFilePath());
+                .SaveToFile(DataConfiguration.MatchEntriesFileName.GetFilePath());
         }
 
         #endregion
@@ -164,7 +163,7 @@ namespace TournamentTracker.Connectors
 
         public List<PersonModel> GetAllParticipants()
         {
-            return GlobalConfiguration.PeopleFileName
+            return DataConfiguration.PeopleFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToPersonModels();
@@ -172,7 +171,7 @@ namespace TournamentTracker.Connectors
 
         public List<PrizeModel> GetPrizes()
         {
-            return GlobalConfiguration.PrizesFileName
+            return DataConfiguration.PrizesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToPrizeModels();
@@ -180,7 +179,7 @@ namespace TournamentTracker.Connectors
 
         public List<TeamModel> GetTeams()
         {
-            return GlobalConfiguration.TeamsFileName
+            return DataConfiguration.TeamsFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToTeamModels();
@@ -188,7 +187,7 @@ namespace TournamentTracker.Connectors
 
         public List<TournamentModel> GetTournaments()
         {
-            return GlobalConfiguration.TournamentsFileName
+            return DataConfiguration.TournamentsFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToTournamentModels();

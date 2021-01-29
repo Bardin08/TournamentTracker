@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 
-namespace TournamentTracker.Connectors.TextHelpers
+namespace TournamentTracker.Data.Connectors.TextHelpers
 {
     public static class ToStringConverters
     { 
@@ -54,8 +54,8 @@ namespace TournamentTracker.Connectors.TextHelpers
             var lines = new List<string>();
             foreach (var t in tournaments)
             {
-                t.EnteredTeams.TeamsToLines().SaveToFile(GlobalConfiguration.TeamsFileName);
-                t.Prizes.PrizesToLines().SaveToFile(GlobalConfiguration.PrizesFileName);
+                t.EnteredTeams.TeamsToLines().SaveToFile(DataConfiguration.TeamsFileName);
+                t.Prizes.PrizesToLines().SaveToFile(DataConfiguration.PrizesFileName);
 
                 var teamsIds = "";
                 foreach (var team in t.EnteredTeams)

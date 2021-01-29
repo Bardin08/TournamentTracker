@@ -2,15 +2,15 @@
 using System.Linq;
 using System.Collections.Generic;
 
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 
-namespace TournamentTracker.Connectors.TextHelpers
+namespace TournamentTracker.Data.Connectors.TextHelpers
 {
     public static class DataLoaders
     {
         public static List<PersonModel> GetParticipantsByIds(this string[] ids)
         {
-            var participants = GlobalConfiguration.PeopleFileName
+            var participants = DataConfiguration.PeopleFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToPersonModels();
@@ -32,7 +32,7 @@ namespace TournamentTracker.Connectors.TextHelpers
 
         public static TeamModel GetTeamById(int teamId) 
         {
-            var teams = GlobalConfiguration.TeamsFileName
+            var teams = DataConfiguration.TeamsFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToTeamModels();
@@ -42,7 +42,7 @@ namespace TournamentTracker.Connectors.TextHelpers
 
         public static List<TeamModel> GetTeamsByIds(this string[] ids)
         {
-            var allTeams = GlobalConfiguration.TeamsFileName
+            var allTeams = DataConfiguration.TeamsFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToTeamModels();
@@ -64,7 +64,7 @@ namespace TournamentTracker.Connectors.TextHelpers
 
         public static List<PrizeModel> GetPrizesByIds(this string[] ids)
         {
-            var allPrizes = GlobalConfiguration.PrizesFileName
+            var allPrizes = DataConfiguration.PrizesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToPrizeModels();
@@ -84,7 +84,7 @@ namespace TournamentTracker.Connectors.TextHelpers
 
         public static MatchModel GetMatchById(int matchId)
         {
-            var matches = GlobalConfiguration.MatchesFileName
+            var matches = DataConfiguration.MatchesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToMatchModels();
@@ -94,7 +94,7 @@ namespace TournamentTracker.Connectors.TextHelpers
 
         public static List<List<MatchModel>> GetRounds(this string[] ids)
         {
-            var matches = GlobalConfiguration.MatchesFileName
+            var matches = DataConfiguration.MatchesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToMatchModels();
@@ -119,7 +119,7 @@ namespace TournamentTracker.Connectors.TextHelpers
     
         public static List<MatchEntryModel> GetEntriesByIds(this string[] ids)
         {
-            var entries = GlobalConfiguration.MatchEntriesFileName
+            var entries = DataConfiguration.MatchEntriesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToMatchEntryModels();

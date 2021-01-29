@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using TournamentTracker.Interfaces;
+using TournamentTracker.Data.Interfaces;
 
 namespace TournamentTracker
 {
@@ -10,17 +11,6 @@ namespace TournamentTracker
     /// </summary>
     public static class GlobalConfiguration
     {
-        #region Text file names
-
-        public const string PrizesFileName = "PrizeModels.csv";
-        public const string PeopleFileName = "PeopleModels.csv";
-        public const string TeamsFileName = "TeamModels.csv";
-        public const string TournamentsFileName = "TournamentsModels.csv";
-        public const string MatchesFileName = "Matchups.csv";
-        public const string MatchEntriesFileName = "MatchupEntries.csv";
-
-        #endregion
-
         /// <summary>
         /// Connector for access to the data storage. 
         /// </summary>
@@ -30,7 +20,7 @@ namespace TournamentTracker
         /// Sources where notifications should be sent.
         /// </summary>
         public static List<INotificationSource> NotificationSources { get; private set; } = new List<INotificationSource>();
-
+        
         /// <summary>
         /// Initiate connector. Allows changing data storage. 
         /// </summary>
@@ -48,15 +38,6 @@ namespace TournamentTracker
             }
 
             NotificationSources.Add(notificationSource);
-        }
-
-        /// <summary>
-        /// Return the connector string.
-        /// </summary>
-        /// <param name="name"> Connection string name. </param>
-        public static string GetConnectionString(string name)
-        {
-            return System.Configuration.ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
     }
 }

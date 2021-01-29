@@ -6,7 +6,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
 using TournamentTracker;
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 using TournamentTrackerWPFUI.Helpers;
 using TournamentTrackerWPFUI.Interfaces;
 

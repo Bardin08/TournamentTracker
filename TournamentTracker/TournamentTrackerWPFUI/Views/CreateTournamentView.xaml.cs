@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 using TournamentTrackerWPFUI.Helpers;
 using TournamentTrackerWPFUI.Interfaces;
 using TournamentTrackerWPFUI.ViewModels;
@@ -19,7 +19,7 @@ namespace TournamentTrackerWPFUI.Views
     public partial class CreateTournament : MetroWindow, IPrizeRequester, ITeamRequester
     {
         private readonly CreateTournamentViewModel _viewModel = 
-            new CreateTournamentViewModel(TournamentTracker.GlobalConfiguration.Connection);
+            new CreateTournamentViewModel();
 
         private readonly ITournamentRequester _caller;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 
-namespace TournamentTracker.Interfaces
+namespace TournamentTracker.Data.Interfaces
 {
     /// <summary>
     /// Interface for data storage connectors. Contains methods to manipulate data.

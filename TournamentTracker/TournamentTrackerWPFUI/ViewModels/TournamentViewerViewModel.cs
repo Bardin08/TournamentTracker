@@ -3,8 +3,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-using TournamentTracker.Models;
-using TournamentTracker.Interfaces;
+using TournamentTracker.Domain.Models;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {
@@ -19,8 +18,6 @@ namespace TournamentTrackerWPFUI.ViewModels
         #endregion
 
         #region Variables
-
-        private readonly IDataConnection _dataSource;
 
         private ObservableCollection<MatchModel> _matchesForCurrentRound;
         private ObservableCollection<MatchModel> _unplayedMatchesForCurrentRound;
@@ -115,10 +112,8 @@ namespace TournamentTrackerWPFUI.ViewModels
 
         #region Methods
 
-        public TournamentViewerViewModel(IDataConnection dataSource, TournamentModel tournament)
+        public TournamentViewerViewModel(TournamentModel tournament)
         {
-            _dataSource = dataSource;
-
             Tournament = tournament;
 
             PrepareDataForView();
@@ -147,7 +142,7 @@ namespace TournamentTrackerWPFUI.ViewModels
                 MoveTeamToNextRound(SelectedMatch);
             }
 
-            _dataSource.UpdateMatch(SelectedMatch);
+            TournamentTracker.GlobalConfiguration.Connection.UpdateMatch(SelectedMatch);
 
             TournamentTracker.Logic.TournamentLogic.Notify(Tournament, SelectedMatch);
 
@@ -212,7 +207,7 @@ namespace TournamentTrackerWPFUI.ViewModels
                     MoveTeamToNextRound(match);
                 }
 
-                _dataSource.UpdateMatch(match);
+                TournamentTracker.GlobalConfiguration.Connection.UpdateMatch(match);
 
                 TournamentTracker.Logic.TournamentLogic.Notify(Tournament, match);
             }

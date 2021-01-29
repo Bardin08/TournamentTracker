@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Configuration;
-using System.Collections.Generic;
 
-namespace TournamentTracker.Connectors.TextHelpers
+namespace TournamentTracker.Data.Connectors.TextHelpers
 {
     public static class CSVFileProcessor
     {

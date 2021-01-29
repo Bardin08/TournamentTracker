@@ -1,4 +1,4 @@
-﻿namespace TournamentTracker.Models
+﻿namespace TournamentTracker.Domain.Models
 {
     public class PersonModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Collections.ObjectModel;
 
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {

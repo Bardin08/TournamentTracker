@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
-using TournamentTracker.Models;
-using static TournamentTracker.Connectors.TextHelpers.DataLoaders;
+using TournamentTracker.Domain.Models;
+using static TournamentTracker.Data.Connectors.TextHelpers.DataLoaders;
 
-namespace TournamentTracker.Connectors.TextHelpers
+namespace TournamentTracker.Data.Connectors.TextHelpers
 {
     public static class ToModelConverters
     {
@@ -110,7 +110,7 @@ namespace TournamentTracker.Connectors.TextHelpers
         private static List<MatchEntryModel> ToMatchEntryModel(string input)
         {
             var output = new List<MatchEntryModel>();
-            List<MatchEntryModel> entries = GlobalConfiguration.MatchEntriesFileName
+            List<MatchEntryModel> entries = DataConfiguration.MatchEntriesFileName
                 .GetFilePath()
                 .LoadFile()
                 .ToMatchEntryModels();

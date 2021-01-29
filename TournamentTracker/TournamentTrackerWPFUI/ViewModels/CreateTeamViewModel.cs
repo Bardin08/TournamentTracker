@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-using TournamentTracker.Models;
+using TournamentTracker.Domain.Models;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {

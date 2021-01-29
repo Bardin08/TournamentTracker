@@ -1,4 +1,4 @@
-﻿using TournamentTracker.Models;
+﻿using TournamentTracker.Domain.Models;
 
 namespace TournamentTrackerWPFUI.Interfaces
 {

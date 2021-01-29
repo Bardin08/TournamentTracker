@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TournamentTracker.Models
+namespace TournamentTracker.Domain.Models
 {
     public class MatchModel
     {

@@ -1,14 +1,14 @@
-﻿using System.Data;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Collections.Generic;
+using System.Linq;
 
 using Dapper;
 
-using TournamentTracker.Models;
-using TournamentTracker.Interfaces;
+using TournamentTracker.Data.Interfaces;
+using TournamentTracker.Domain.Models;
 
-namespace TournamentTracker.Connectors
+namespace TournamentTracker.Data.Connectors
 {
     /// <summary>
     /// Connector for MS SQL database. Allows saving data to MS SQL databases.
@@ -20,7 +20,7 @@ namespace TournamentTracker.Connectors
         public PersonModel SavePerson(PersonModel person)
         {
             using (var connection =
-                new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+                new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 var p = new Dapper.DynamicParameters();
 
@@ -41,7 +41,7 @@ namespace TournamentTracker.Connectors
         public PrizeModel SavePrize(PrizeModel prize)
         {
             using (var connection =
-                new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+                new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 var p = new Dapper.DynamicParameters();
 
@@ -62,7 +62,7 @@ namespace TournamentTracker.Connectors
 
         public TeamModel SaveTeam(TeamModel team)
         {
-            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            using (var connection = new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 var p = new DynamicParameters();
 
@@ -89,7 +89,7 @@ namespace TournamentTracker.Connectors
 
         public TournamentModel SaveTournament(TournamentModel tournament)
         {
-            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            using (var connection = new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 tournament = SaveTournament(tournament, connection);
                 SaveTournamentPrizes(tournament, connection);
@@ -153,7 +153,7 @@ namespace TournamentTracker.Connectors
 
         public List<PersonModel> GetAllParticipants()
         {
-            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            using (var connection = new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 return connection.Query<PersonModel>("dbo.spPeople_GetAll").ToList();
             }
@@ -161,7 +161,7 @@ namespace TournamentTracker.Connectors
 
         public List<PrizeModel> GetPrizes()
         {
-            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            using (var connection = new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 return connection.Query<PrizeModel>("dbo.spPrizes_GetAll").ToList();
             }
@@ -170,7 +170,7 @@ namespace TournamentTracker.Connectors
         // TODO: Add participants to teams
         public List<TeamModel> GetTeams()
         {
-            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            using (var connection = new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 return connection.Query<TeamModel>("dbo.spTeams_GetAll").ToList();
             }
@@ -225,7 +225,7 @@ namespace TournamentTracker.Connectors
         // TODO: Refactoring requires
         public List<TournamentModel> GetTournaments()
         {
-            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            using (var connection = new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 var output = connection.Query<TournamentModel>("dbo.spTournaments_GetAll").ToList();
 
@@ -291,7 +291,7 @@ namespace TournamentTracker.Connectors
 
         public MatchModel UpdateMatch(MatchModel match)
         {
-            using (var connection = new SqlConnection(GlobalConfiguration.GetConnectionString(DatabaseName)))
+            using (var connection = new SqlConnection(DataConfiguration.GetConnectionString(DatabaseName)))
             {
                 var p = new DynamicParameters();
 
