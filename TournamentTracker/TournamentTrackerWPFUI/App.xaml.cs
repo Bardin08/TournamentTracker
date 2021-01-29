@@ -1,5 +1,10 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Windows;
+
+using TournamentTracker;
 using TournamentTracker.Connectors;
+using TournamentTracker.Notifiers;
+using TournamentTracker.Notifiers.Options;
 
 namespace TournamentTrackerWPFUI
 {
@@ -13,6 +18,14 @@ namespace TournamentTrackerWPFUI
             base.OnStartup(e);
 
             TournamentTracker.GlobalConfiguration.InitConnections(new MSSQLConnector());
+
+            var options = new TelegramNotifierOptions()
+            {
+                BotToken = ConfigurationManager.AppSettings["notifierTelegramBotToken"],
+                ChatId = long.Parse(ConfigurationManager.AppSettings["chatId"])
+            };
+
+            GlobalConfiguration.AddNotificationSource(new TelegramNotifier(options));
         }
     }
 }
