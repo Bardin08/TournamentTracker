@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 using TournamentTracker.Domain.Models;
+using TournamentTracker.BusinessLogic;
+using System.Text;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {
@@ -124,6 +126,62 @@ namespace TournamentTrackerWPFUI.ViewModels
             SelectedMatch = match;
         }
         
+        public void Notify()
+        {
+            // Check what messages should be sent
+            // Create messages
+            // Send them throw all notification sources
+
+            foreach (var ns in GlobalConfiguration.NotificationSources)
+            {
+                ns.Notify(() =>
+                {
+                    var sb = new StringBuilder();
+
+                    sb.Append($"Tournament: {Tournament.TournamentName}\n\n");
+
+                    sb.AppendLine();
+
+                    sb.Append($"Match between *{SelectedMatch.Entries[0].CompetingTeam.TeamName}*" +
+                        $" and *{SelectedMatch.Entries[1].CompetingTeam.TeamName}* ended.");
+
+                    sb.AppendLine();
+                    sb.AppendLine();
+
+                    sb.Append($"Final score: " +
+                        $"{SelectedMatch.Entries[0].Score}:{SelectedMatch.Entries[1].Score}.");
+
+                    sb.AppendLine();
+
+                    sb.Append($"The winner is: *{SelectedMatch.Winner.TeamName}*");
+
+                    return sb.ToString();
+                });
+
+                if (IsRoundEnd())
+                {
+                    ns.Notify(() => $"Round {CurrentRound} ended.");
+                }
+
+                if (IsTournamentEnd())
+                {
+                    ns.Notify(() =>
+                    {
+                        var sb = new StringBuilder();
+
+                        sb.Append($"Tournament: { Tournament.TournamentName }");
+
+                        sb.AppendLine();
+                        sb.AppendLine();
+
+                        sb.Append($"Tournament ended. The winner is {SelectedMatch.Winner}");
+
+                        return sb.ToString();
+                    });
+                }
+            }
+        }
+
         public void WriteMatchResult(int firstTeamScore, int secondTeamScore)
         {
             int winnerIndex = 0;
@@ -144,7 +202,32 @@ namespace TournamentTrackerWPFUI.ViewModels
 
             TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.UpdateMatch(SelectedMatch);
 
-            TournamentTracker.BusinessLogic.Logic.TournamentLogic.Notify(Tournament, SelectedMatch);
+            foreach (var ns in GlobalConfiguration.NotificationSources)
+            {
+                ns.Notify(() =>
+                {
+                    var sb = new StringBuilder();
+
+                    sb.Append($"Tournament: {Tournament.TournamentName}\n\n");
+
+                    sb.AppendLine();
+
+                    sb.Append($"Match between *{SelectedMatch.Entries[0].CompetingTeam.TeamName}*" +
+                        $"and *{SelectedMatch.Entries[1].CompetingTeam.TeamName}* ended.");
+
+                    sb.AppendLine();
+                    sb.AppendLine();
+
+                    sb.Append($"Final score: " +
+                        $"{SelectedMatch.Entries[0].Score}:{SelectedMatch.Entries[1].Score}.");
+
+                    sb.AppendLine();
+
+                    sb.Append($"The winner is: *{SelectedMatch.Winner.TeamName}*");
+
+                    return sb.ToString();
+                });
+            }
 
             UnplayedMatchesForCurrentRound.Remove(SelectedMatch);
             PropertyChanged(this, new PropertyChangedEventArgs(nameof(UnplayedMatchesForCurrentRound)));
@@ -214,7 +297,7 @@ namespace TournamentTrackerWPFUI.ViewModels
                     MoveTeamToNextRound(match);
                 }
 
-                TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.UpdateMatch(match);
+                GlobalConfiguration.Connection.UpdateMatch(match);
             }
         }
 

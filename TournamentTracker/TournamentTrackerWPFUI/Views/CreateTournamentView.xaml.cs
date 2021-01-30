@@ -41,8 +41,6 @@ namespace TournamentTrackerWPFUI.Views
             {
                 var tournament = CreateTournamentModel();
 
-                TournamentTracker.BusinessLogic.Logic.TournamentLogic.CreateRounds(tournament);
-
                 await Task.Run(() => TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.SaveTournament(tournament));
                 _caller.TournamentCreated(tournament);
                 await this.ShowMessageAsync("", "Tournament successfully created");
@@ -122,7 +120,8 @@ namespace TournamentTrackerWPFUI.Views
         {
             _viewModel.SelectedPrizes.ToList().RemoveAll(x => x == null);
             _viewModel.SelectedTeams.ToList().RemoveAll(x => x == null);
-            return new TournamentModel
+
+            var tournament = new TournamentModel
             {
                 TournamentName = TournamentNameTextBox.Text,
                 EntryFee = decimal.Parse(EntryFeeTextBox.Text),
@@ -130,6 +129,10 @@ namespace TournamentTrackerWPFUI.Views
                 Prizes = _viewModel.SelectedPrizes.ToList(),
                 Rounds = new List<List<MatchModel>>()
             };
+
+            tournament.CreateRounds();
+
+            return tournament;
         }
 
         public void TeamCreated(TeamModel team)
