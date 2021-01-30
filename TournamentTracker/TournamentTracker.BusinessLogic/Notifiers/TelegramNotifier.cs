@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
@@ -21,6 +22,11 @@ namespace TournamentTracker.BusinessLogic.Notifiers
         public async Task Notify(string message)
         {
             await _client.SendTextMessageAsync(_chatId, message, ParseMode.Markdown);
+        }
+
+        public async Task Notify(Func<string> formatter)
+        {
+            await Notify(formatter());
         }
     }
 }
