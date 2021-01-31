@@ -157,28 +157,6 @@ namespace TournamentTrackerWPFUI.ViewModels
             }
         }
 
-        private bool IsRoundEnd()
-        {
-            foreach (var m in Tournament.Rounds[CurrentRound - 1])
-            {
-                if (m.Winner == null)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private bool IsTournamentEnd()
-        {
-            if (CurrentRound != Tournament.Rounds.Count)
-            {
-                return false;
-            }
-
-            return IsRoundEnd();
-        }
-
         public void WriteMatchResult(int firstTeamScore, int secondTeamScore)
         {
             int winnerIndex = 0;
