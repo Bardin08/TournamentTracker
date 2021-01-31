@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TournamentTracker\TournamentTracker.csproj" />
+    <ProjectReference Include="..\TournamentTracker.BusinessLogic\TournamentTracker.BusinessLogic.csproj" />
+    <ProjectReference Include="..\TournamentTracker.Domain\TournamentTracker.Domain.csproj" />
   </ItemGroup>
 
 </Project>

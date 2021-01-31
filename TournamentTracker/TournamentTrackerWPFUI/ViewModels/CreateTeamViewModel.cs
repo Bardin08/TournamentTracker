@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using TournamentTracker.Models;
+
+using TournamentTracker.Domain.Models;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {
@@ -43,7 +43,7 @@ namespace TournamentTrackerWPFUI.ViewModels
 
         public CreateTeamViewModel()
         {
-            var personModels = TournamentTracker.GlobalConfiguration.Connection.GetAllParticipants();
+            var personModels = TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.GetAllParticipants();
             AvailableMembers = new ObservableCollection<PersonModel>(personModels);
 
             SelectedMembers = new ObservableCollection<PersonModel>();

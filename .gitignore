@@ -348,6 +348,14 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Rider
+# Rider auto-generates .iml files, and contentModel.xml
+**/.idea/**/*.iml
+**/.idea/**/contentModel.xml
+**/.idea/**/modules.xml
+
+# Custom
 *.Config
 TournamentTracker/Database/TablesCreationScripts/desktop.ini
 TournamentTracker/Database/

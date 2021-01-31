@@ -1,13 +1,15 @@
-﻿using System.Windows;
-using MahApps.Metro.Controls;
-using TournamentTracker.Models;
+﻿using System.Linq;
+using System.Windows;
+using System.Threading.Tasks;
 using System.Collections.Generic;
+
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+
+using TournamentTracker.Domain.Models;
 using TournamentTrackerWPFUI.Helpers;
 using TournamentTrackerWPFUI.Interfaces;
 using TournamentTrackerWPFUI.ViewModels;
-using MahApps.Metro.Controls.Dialogs;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TournamentTrackerWPFUI.Views
 {
@@ -17,7 +19,7 @@ namespace TournamentTrackerWPFUI.Views
     public partial class CreateTournament : MetroWindow, IPrizeRequester, ITeamRequester
     {
         private readonly CreateTournamentViewModel _viewModel = 
-            new CreateTournamentViewModel(TournamentTracker.GlobalConfiguration.Connection);
+            new CreateTournamentViewModel();
 
         private readonly ITournamentRequester _caller;
 
@@ -39,9 +41,7 @@ namespace TournamentTrackerWPFUI.Views
             {
                 var tournament = CreateTournamentModel();
 
-                TournamentTracker.Logic.TournamentLogic.CreateRounds(tournament);
-
-                await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.SaveTournament(tournament));
+                await Task.Run(() => TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.SaveTournament(tournament));
                 _caller.TournamentCreated(tournament);
                 await this.ShowMessageAsync("", "Tournament successfully created");
 
@@ -120,7 +120,8 @@ namespace TournamentTrackerWPFUI.Views
         {
             _viewModel.SelectedPrizes.ToList().RemoveAll(x => x == null);
             _viewModel.SelectedTeams.ToList().RemoveAll(x => x == null);
-            return new TournamentModel
+
+            var tournament = new TournamentModel
             {
                 TournamentName = TournamentNameTextBox.Text,
                 EntryFee = decimal.Parse(EntryFeeTextBox.Text),
@@ -128,6 +129,10 @@ namespace TournamentTrackerWPFUI.Views
                 Prizes = _viewModel.SelectedPrizes.ToList(),
                 Rounds = new List<List<MatchModel>>()
             };
+
+            tournament.CreateRounds();
+
+            return tournament;
         }
 
         public void TeamCreated(TeamModel team)

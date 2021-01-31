@@ -3,11 +3,13 @@ using System.Linq;
 using System.Windows;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using MahApps.Metro.Controls;
-using TournamentTracker.Models;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+
+using TournamentTracker.Domain.Models;
 using TournamentTrackerWPFUI.Helpers;
 using TournamentTrackerWPFUI.Interfaces;
 using TournamentTrackerWPFUI.ViewModels;
@@ -52,7 +54,7 @@ namespace TournamentTrackerWPFUI.Views
             if (validationResult.IsValid)
             {
                 var person = CreatePersonModel();
-                await Task.Run(() => person = TournamentTracker.GlobalConfiguration.Connection.SavePerson(person));
+                await Task.Run(() => person = TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.SavePerson(person));
 
                 (DataContext as CreateTeamViewModel).AvailableMembers.Add(person);
                 
@@ -155,7 +157,7 @@ namespace TournamentTrackerWPFUI.Views
             {
                 var team = CreateTeamModel();
                 
-                await Task.Run(() => TournamentTracker.GlobalConfiguration.Connection.SaveTeam(team));
+                await Task.Run(() => TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.SaveTeam(team));
                 _caller.TeamCreated(team);
 
                 (DataContext as CreateTeamViewModel).SaveTeam();

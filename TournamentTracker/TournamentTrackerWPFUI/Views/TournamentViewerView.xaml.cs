@@ -1,8 +1,8 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using System.Linq;
-using TournamentTracker;
-using TournamentTracker.Models;
+
+using TournamentTracker.BusinessLogic;
+using TournamentTracker.Domain.Models;
 using TournamentTrackerWPFUI.ViewModels;
 
 namespace TournamentTrackerWPFUI.Views
@@ -18,7 +18,7 @@ namespace TournamentTrackerWPFUI.Views
         {
             InitializeComponent();
 
-            _viewModel = new TournamentViewerViewModel(GlobalConfiguration.Connection, tournament);
+            _viewModel = new TournamentViewerViewModel(tournament);
 
             DataContext = _viewModel;
         }

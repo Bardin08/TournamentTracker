@@ -1,7 +1,7 @@
-﻿using TournamentTracker.Models;
+﻿using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
+
+using TournamentTracker.Domain.Models;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {
@@ -26,7 +26,7 @@ namespace TournamentTrackerWPFUI.ViewModels
         public TournamentDashboardViewModel()
         {
             Tournaments =
-                new ObservableCollection<TournamentModel>(TournamentTracker.GlobalConfiguration.Connection.GetTournaments());
+                new ObservableCollection<TournamentModel>(TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.GetTournaments());
 
             SelectedTournament = Tournaments[0];
         }
