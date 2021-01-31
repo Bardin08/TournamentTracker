@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using TournamentTracker.Domain.Models;
 using TournamentTracker.BusinessLogic;
 using System.Text;
+using System;
 
 namespace TournamentTrackerWPFUI.ViewModels
 {
@@ -128,10 +129,6 @@ namespace TournamentTrackerWPFUI.ViewModels
         
         public void Notify()
         {
-            // Check what messages should be sent
-            // Create messages
-            // Send them throw all notification sources
-
             foreach (var ns in GlobalConfiguration.NotificationSources)
             {
                 ns.Notify(() =>
@@ -157,29 +154,29 @@ namespace TournamentTrackerWPFUI.ViewModels
 
                     return sb.ToString();
                 });
+            }
+        }
 
-                if (IsRoundEnd())
+        private bool IsRoundEnd()
+        {
+            foreach (var m in Tournament.Rounds[CurrentRound - 1])
+            {
+                if (m.Winner == null)
                 {
-                    ns.Notify(() => $"Round {CurrentRound} ended.");
-                }
-
-                if (IsTournamentEnd())
-                {
-                    ns.Notify(() =>
-                    {
-                        var sb = new StringBuilder();
-
-                        sb.Append($"Tournament: { Tournament.TournamentName }");
-
-                        sb.AppendLine();
-                        sb.AppendLine();
-
-                        sb.Append($"Tournament ended. The winner is {SelectedMatch.Winner}");
-
-                        return sb.ToString();
-                    });
+                    return false;
                 }
             }
+            return true;
+        }
+
+        private bool IsTournamentEnd()
+        {
+            if (CurrentRound != Tournament.Rounds.Count)
+            {
+                return false;
+            }
+
+            return IsRoundEnd();
         }
 
         public void WriteMatchResult(int firstTeamScore, int secondTeamScore)
@@ -200,8 +197,16 @@ namespace TournamentTrackerWPFUI.ViewModels
                 MoveTeamToNextRound(SelectedMatch);
             }
 
-            TournamentTracker.BusinessLogic.GlobalConfiguration.Connection.UpdateMatch(SelectedMatch);
+            GlobalConfiguration.Connection.UpdateMatch(SelectedMatch);
 
+            SendNotification();
+
+            UnplayedMatchesForCurrentRound.Remove(SelectedMatch);
+            PropertyChanged(this, new PropertyChangedEventArgs(nameof(UnplayedMatchesForCurrentRound)));
+        }
+
+        private void SendNotification() 
+        {
             foreach (var ns in GlobalConfiguration.NotificationSources)
             {
                 ns.Notify(() =>
@@ -228,9 +233,6 @@ namespace TournamentTrackerWPFUI.ViewModels
                     return sb.ToString();
                 });
             }
-
-            UnplayedMatchesForCurrentRound.Remove(SelectedMatch);
-            PropertyChanged(this, new PropertyChangedEventArgs(nameof(UnplayedMatchesForCurrentRound)));
         }
 
         private void UpdateMatches()
@@ -306,7 +308,7 @@ namespace TournamentTrackerWPFUI.ViewModels
             foreach (var m in Tournament.Rounds[CurrentRound])
             {
                 // r -- Free slot for team at the next round
-                var r = m.Entries.FirstOrDefault(me => me.CompetingTeam == null && me.ParentMatch == null);
+                var r = m.Entries.FirstOrDefault(me => me.CompetingTeam == null);
 
                 if (r != null)
                 {
